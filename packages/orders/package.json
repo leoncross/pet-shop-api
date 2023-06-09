@@ -1,0 +1,19 @@
+{
+  "name": "@pet-shop-api/orders-handler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc index.ts --outDir dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.345.0",
+    "@aws-sdk/util-dynamodb": "^3.345.0",
+    "aws-lambda": "^1.0.7"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.116"
+  }
+}

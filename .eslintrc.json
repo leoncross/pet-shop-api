@@ -1,0 +1,19 @@
+{
+  "env": {
+    "node": true
+  },
+  "parserOptions": {
+    "project": ["./tsconfig.json"]
+  },
+  "rules": {
+    "no-restricted-syntax": ["error", "ForInStatement"],
+    "import/prefer-default-export": "off",
+    "max-len": ["error", { "code": 140 }],
+    "@typescript-eslint/no-explicit-any": "error"
+  },
+  "ignorePatterns": ["**/*.js", "**/*.json", "**/*.sh", "**/*.yml", "**/*.md"],
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": ["airbnb-typescript/base"]
+}

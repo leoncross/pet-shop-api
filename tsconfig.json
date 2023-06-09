@@ -1,0 +1,13 @@
+{
+  "extends": "@sindresorhus/tsconfig",
+  "compilerOptions": {
+    "declaration": false,
+    "outDir": "./build",
+    "sourceMap": true,
+    "target": "ES2021",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ]
+  }
+}
