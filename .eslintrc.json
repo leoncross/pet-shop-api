@@ -6,6 +6,7 @@
     "project": ["./tsconfig.json"]
   },
   "rules": {
+    "class-methods-use-this": "off",
     "no-restricted-syntax": ["error", "ForInStatement"],
     "import/prefer-default-export": "off",
     "max-len": ["error", { "code": 140 }],

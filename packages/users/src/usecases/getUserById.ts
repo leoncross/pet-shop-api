@@ -1,15 +1,16 @@
-type getUserById = {
-  id?: string
+type GetUserByIdInput = {
+  id: string
 };
 
-const validate = (id?: string) => {
+const validate = (input: GetUserByIdInput) => {
+  const { id } = input;
   if (!id) {
     throw new Error('INVALID');
   }
 };
 
-export const getUserById = async (id?: string) => {
-  validate(id);
+export const getUserById = async (input: GetUserByIdInput) => {
+  validate(input);
 
   return {
     statusCode: 200,
