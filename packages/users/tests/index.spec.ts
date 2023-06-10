@@ -1,7 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
 import * as usecase from '../src/use-cases';
 import { userHandler } from '../index';
-import { generateUser, generateUserId } from './testHelpers';
+import { generateUser, generateUserId } from './helpers';
 
 jest.mock('../src/repositories/UserRepository');
 jest.mock('../src/use-cases');
