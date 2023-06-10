@@ -1,3 +1,4 @@
+import { Product } from './Product';
 
 export type Order = {
   id: string; // same as `sk`
@@ -15,4 +16,4 @@ export type Order = {
 export type DynamodbOrder = {
   pk: string; // `USER#${userId}`
   sk: string; // `ORDER#${id}`
-}
+};

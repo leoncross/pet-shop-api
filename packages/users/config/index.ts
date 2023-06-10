@@ -7,12 +7,12 @@ type EnvironmentValues<T> = {
 
 type Configs = {
   apiKey: EnvironmentValues<string>;
-  dbName: EnvironmentValues<string>;
+  dbTableName: EnvironmentValues<string>;
 };
 
 const config: Configs = {
   apiKey: { default: 'asdfasdfasd' },
-  dbName: { default: 'asdfasdfasd' },
+  dbTableName: { default: 'pet-shop' },
 };
 
 export const get = <K extends keyof Configs>(key: K): Configs[K] extends EnvironmentValues<infer T> ? T : never => {
@@ -32,7 +32,3 @@ export const get = <K extends keyof Configs>(key: K): Configs[K] extends Environ
 
   return environmentValue || defaultValue;
 };
-
-const val = get('dbName');
-
-console.log(typeof val); // string

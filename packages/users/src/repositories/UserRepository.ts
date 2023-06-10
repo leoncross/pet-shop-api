@@ -3,13 +3,15 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
   Address, DynamodbUser, PartialDynamodbUser, PartialUser, User,
 } from '../../../../types/User';
+import { get } from '../../config';
 
 export class UserRepository {
-  private client: DynamoDBDocument;
+  client: DynamoDBDocument;
 
-  private tableName: 'yourTableName' | undefined;
+  private readonly tableName: string;
 
   constructor() {
+    this.tableName = get('dbTableName');
     const dbClient = new DynamoDBClient({});
     this.client = DynamoDBDocument.from(dbClient);
   }

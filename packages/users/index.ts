@@ -2,8 +2,8 @@ import {
   APIGatewayProxyHandler,
   APIGatewayProxyEvent,
 } from 'aws-lambda';
-import * as usecase from './src/usecases';
-import { UserRepository } from './src/repositories/UsersRepository';
+import * as usecase from './src/use-cases';
+import { UserRepository } from './src/repositories/UserRepository';
 import { Context } from './types';
 
 const successResult = (value: unknown) => ({
@@ -11,7 +11,7 @@ const successResult = (value: unknown) => ({
   body: JSON.stringify(value),
 });
 
-export const usersHandler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent) => {
+export const userHandler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent) => {
   try {
     const {
       httpMethod,

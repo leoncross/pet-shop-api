@@ -1,4 +1,4 @@
-type Product = {
+export type Product = {
   id: string; // same as `sk`
   category: string; // toy
   subcategory: string; // rope
@@ -16,7 +16,7 @@ type Product = {
   };
 };
 
-type DynamodbProduct = {
+export type DynamodbProduct = {
   pk: string; // `PRODUCT#${id}`
   sk: string; // `CATEGORY#${category}`
-}
+};

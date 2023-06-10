@@ -1,4 +1,4 @@
-import { UserRepository } from './src/repositories/UsersRepository';
+import { UserRepository } from './src/repositories/UserRepository';
 
 type Context = {
   logger: {},
