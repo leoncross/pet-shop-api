@@ -1,6 +1,8 @@
-type GetUserByIdInput = {
-  id: string
-};
+import { Context } from '../../types';
+
+export interface GetUserByIdInput {
+  id: string;
+}
 
 const validate = (input: GetUserByIdInput) => {
   const { id } = input;
@@ -9,7 +11,10 @@ const validate = (input: GetUserByIdInput) => {
   }
 };
 
-export const getUserById = async (input: GetUserByIdInput) => {
+export const getUserById = async (input: GetUserByIdInput, context: Context) => {
+  if (context.logger) {
+    console.log('it exists');
+  }
   validate(input);
 
   return {

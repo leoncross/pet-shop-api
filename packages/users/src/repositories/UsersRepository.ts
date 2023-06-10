@@ -1,6 +1,8 @@
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamodbUser, User } from '../../../../types/User';
+import {
+  Address, DynamodbUser, PartialDynamodbUser, PartialUser, User,
+} from '../../../../types/User';
 
 export class UserRepository {
   private client: DynamoDBDocument;
@@ -12,12 +14,23 @@ export class UserRepository {
     this.client = DynamoDBDocument.from(dbClient);
   }
 
-  private toDynamoDBUser(user: User): DynamodbUser {
-    return {
-      ...user,
+  private toDynamoDBUser(user: PartialUser): PartialDynamodbUser {
+    const { address, ...restUser } = user;
+
+    const dynamodbUser: PartialDynamodbUser = {
+      ...restUser,
       pk: `USER#${user.id}`,
       sk: `USER#${user.id}`,
     };
+
+    if (address) {
+      dynamodbUser.address = {
+        ...(dynamodbUser.address as Partial<Address>),
+        ...address,
+      };
+    }
+
+    return dynamodbUser;
   }
 
   private fromDynamoDBUser(dynamodbUser: DynamodbUser): User {
@@ -52,14 +65,18 @@ export class UserRepository {
     return this.fromDynamoDBUser(result.Item as DynamodbUser);
   }
 
-  async update(user: User): Promise<User> {
+  async update(user: PartialUser): Promise<User> {
     const dynamodbUser = this.toDynamoDBUser(user);
 
-    await this.client.put({
+    const updatedUser = await this.client.update({
       TableName: this.tableName,
-      Item: dynamodbUser,
+      Key: {
+        pk: dynamodbUser.pk,
+        sk: dynamodbUser.sk,
+      },
+      ReturnValues: 'ALL_NEW',
     });
 
-    return user;
+    return this.fromDynamoDBUser(updatedUser.Attributes as DynamodbUser);
   }
 }
