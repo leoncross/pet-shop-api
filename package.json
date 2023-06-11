@@ -7,7 +7,8 @@
     "lint": "prettier --check 'packages/**/*.ts'",
     "lint:fix": "prettier --write 'packages/**/*.ts'",
     "test": "npx --workspaces --no-install npm run test",
-    "build": "npx --workspaces --no-install npm run build"
+    "build": "npx --workspaces --no-install npm run build",
+    "bundle": "bash ./scripts/bundle-lambdas.sh"
   },
   "author": "leoncross <leon@lscross.co.uk>",
   "license": "ISC",
