@@ -40,12 +40,17 @@ describe('updateUser', () => {
     };
 
     userRepository.get = jest.fn().mockResolvedValue(existingUser);
-    userRepository.update = jest.fn().mockResolvedValue({ ...existingUser, ...input });
+    userRepository.update = jest
+      .fn()
+      .mockResolvedValue({ ...existingUser, ...input });
 
     const res = await updateUser(input, context);
 
     expect(userRepository.get).toHaveBeenCalledWith(input.id);
-    expect(userRepository.update).toHaveBeenCalledWith({ ...input, ...existingUser });
+    expect(userRepository.update).toHaveBeenCalledWith({
+      ...input,
+      ...existingUser,
+    });
     expect(res).toEqual({ ...existingUser, ...input });
   });
 
@@ -82,7 +87,7 @@ describe('updateUser', () => {
     userRepository.update = jest.fn().mockRejectedValue(new Error());
 
     await expect(
-      updateUser(input as UpdateUserInput, context),
+      updateUser(input as UpdateUserInput, context)
     ).rejects.toThrowError();
   });
 });

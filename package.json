@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "npx nx run-many --target=lint --fix",
+    "lint": "prettier --check 'packages/**/*.ts'",
+    "lint:fix": "prettier --write 'packages/**/*.ts'",
     "test": "npx --workspaces --no-install npm run test",
     "build": "npx --workspaces --no-install npm run build"
   },

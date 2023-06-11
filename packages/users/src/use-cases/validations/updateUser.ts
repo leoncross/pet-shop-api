@@ -17,9 +17,7 @@ function validateOptionalString(value: unknown): string | undefined {
 }
 
 function validateAddress(input: Partial<Address>): Partial<Address> {
-  const {
-    street, city, state, postalCode, country,
-  } = input;
+  const { street, city, state, postalCode, country } = input;
 
   const validatedStreet = validateOptionalString(street);
   const validatedCity = validateOptionalString(city);
@@ -36,14 +34,11 @@ function validateAddress(input: Partial<Address>): Partial<Address> {
   };
 }
 
-export const updateUser = (id: string | undefined, input: Partial<User>): PartialUser => {
-  const {
-    firstName,
-    lastName,
-    email,
-    address,
-    phone,
-  } = input;
+export const updateUser = (
+  id: string | undefined,
+  input: Partial<User>
+): PartialUser => {
+  const { firstName, lastName, email, address, phone } = input;
 
   return {
     id: validateString(id, 'id'),

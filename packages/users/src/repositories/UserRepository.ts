@@ -1,7 +1,11 @@
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
-  Address, DynamodbUser, PartialDynamodbUser, PartialUser, User,
+  Address,
+  DynamodbUser,
+  PartialDynamodbUser,
+  PartialUser,
+  User,
 } from '../../../../types/User';
 import { get } from '../../config';
 

@@ -10,9 +10,7 @@ function validateString(value: unknown, propertyName: string): string {
 }
 
 function validateAddress(input: Partial<Address>): Address {
-  const {
-    street, city, state, postalCode, country,
-  } = input;
+  const { street, city, state, postalCode, country } = input;
 
   const validatedStreet = validateString(street, 'street');
   const validatedCity = validateString(city, 'city');
@@ -29,14 +27,10 @@ function validateAddress(input: Partial<Address>): Address {
   };
 }
 
-export const createUser = (input: Partial<CreateUserInput>): CreateUserInput => {
-  const {
-    firstName,
-    lastName,
-    email,
-    address,
-    phone,
-  } = input;
+export const createUser = (
+  input: Partial<CreateUserInput>
+): CreateUserInput => {
+  const { firstName, lastName, email, address, phone } = input;
 
   return {
     firstName: validateString(firstName, 'firstName'),

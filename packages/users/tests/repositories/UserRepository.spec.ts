@@ -78,7 +78,7 @@ describe('UserRepository', () => {
               country: 'Country',
             },
           },
-        }),
+        })
       );
 
       const userId = '123';
@@ -142,7 +142,7 @@ describe('UserRepository', () => {
               country: 'Updated Country',
             },
           },
-        }),
+        })
       );
 
       const updatedUser: PartialUser = {

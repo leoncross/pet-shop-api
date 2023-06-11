@@ -4,6 +4,4 @@ import { updateUser } from './updateUser';
 
 import * as validations from './validations';
 
-export {
-  validations, createUser, getUserById, updateUser,
-};
+export { validations, createUser, getUserById, updateUser };

@@ -1,7 +1,4 @@
-import {
-  APIGatewayProxyHandler,
-  APIGatewayProxyEvent,
-} from 'aws-lambda';
+import { APIGatewayProxyHandler, APIGatewayProxyEvent } from 'aws-lambda';
 import * as usecase from './src/use-cases';
 import { UserRepository } from './src/repositories/UserRepository';
 import { Context } from './types';
@@ -11,14 +8,11 @@ const successResult = (value: unknown) => ({
   body: JSON.stringify(value),
 });
 
-export const userHandler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent) => {
+export const userHandler: APIGatewayProxyHandler = async (
+  event: APIGatewayProxyEvent
+) => {
   try {
-    const {
-      httpMethod,
-      path,
-      pathParameters = {},
-      body,
-    } = event;
+    const { httpMethod, path, pathParameters = {}, body } = event;
 
     if (!path.includes('/users')) {
       return {
@@ -39,7 +33,9 @@ export const userHandler: APIGatewayProxyHandler = async (event: APIGatewayProxy
 
     switch (httpMethod) {
       case 'GET': {
-        const input = usecase.validations.getUserById({ id: pathParameters?.['id'] });
+        const input = usecase.validations.getUserById({
+          id: pathParameters?.['id'],
+        });
         const user = await usecase.getUserById(input, context);
         return successResult(user);
       }
@@ -49,7 +45,10 @@ export const userHandler: APIGatewayProxyHandler = async (event: APIGatewayProxy
         return successResult(user);
       }
       case 'PUT': {
-        const input = usecase.validations.updateUser(pathParameters?.['id'], requestBody);
+        const input = usecase.validations.updateUser(
+          pathParameters?.['id'],
+          requestBody
+        );
         const user = await usecase.updateUser(input, context);
         return successResult(user);
       }

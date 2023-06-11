@@ -1,4 +1,8 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
+import {
+  APIGatewayProxyEvent,
+  APIGatewayProxyResult,
+  Context,
+} from 'aws-lambda';
 import * as usecase from '../src/use-cases';
 import { userHandler } from '../index';
 import { generateUser, generateUserId } from './helpers';
@@ -27,7 +31,11 @@ describe('userHandler', () => {
       httpMethod: 'GET',
     } as APIGatewayProxyEvent;
 
-    const result = await userHandler(event, context, cb) as APIGatewayProxyResult;
+    const result = (await userHandler(
+      event,
+      context,
+      cb
+    )) as APIGatewayProxyResult;
 
     expect(result.statusCode).toBe(404);
   });
@@ -44,12 +52,21 @@ describe('userHandler', () => {
     getUserByIdValidationSpy.mockReturnValue({ id: userId });
     getUserByIdSpy.mockResolvedValue(generatedUser);
 
-    const result = await userHandler(event, context, cb) as APIGatewayProxyResult;
+    const result = (await userHandler(
+      event,
+      context,
+      cb
+    )) as APIGatewayProxyResult;
 
     expect(result.statusCode).toBe(200);
     expect(JSON.parse(result.body)).toEqual(generatedUser);
-    expect(usecase.validations.getUserById).toHaveBeenCalledWith({ id: userId });
-    expect(usecase.getUserById).toHaveBeenCalledWith({ id: userId }, expect.anything());
+    expect(usecase.validations.getUserById).toHaveBeenCalledWith({
+      id: userId,
+    });
+    expect(usecase.getUserById).toHaveBeenCalledWith(
+      { id: userId },
+      expect.anything()
+    );
   });
 
   it('handles POST method', async () => {
@@ -64,12 +81,19 @@ describe('userHandler', () => {
     createUserValidationSpy.mockReturnValue(generatedUser);
     createUserSpy.mockResolvedValue(generatedUser);
 
-    const result = await userHandler(event, context, cb) as APIGatewayProxyResult;
+    const result = (await userHandler(
+      event,
+      context,
+      cb
+    )) as APIGatewayProxyResult;
 
     expect(result.statusCode).toBe(200);
     expect(JSON.parse(result.body)).toEqual(generatedUser);
     expect(usecase.validations.createUser).toHaveBeenCalledWith(generatedUser);
-    expect(usecase.createUser).toHaveBeenCalledWith(generatedUser, expect.anything());
+    expect(usecase.createUser).toHaveBeenCalledWith(
+      generatedUser,
+      expect.anything()
+    );
   });
 
   it('handles PUT method', async () => {
@@ -86,11 +110,21 @@ describe('userHandler', () => {
     updateUserValidationSpy.mockReturnValue(generatedUser);
     updateUserSpy.mockResolvedValue(generatedUser);
 
-    const result = await userHandler(event, context, cb) as APIGatewayProxyResult;
+    const result = (await userHandler(
+      event,
+      context,
+      cb
+    )) as APIGatewayProxyResult;
 
     expect(result.statusCode).toBe(200);
     expect(JSON.parse(result.body)).toEqual(generatedUser);
-    expect(usecase.validations.updateUser).toHaveBeenCalledWith(userId, generatedUser);
-    expect(usecase.updateUser).toHaveBeenCalledWith(generatedUser, expect.anything());
+    expect(usecase.validations.updateUser).toHaveBeenCalledWith(
+      userId,
+      generatedUser
+    );
+    expect(usecase.updateUser).toHaveBeenCalledWith(
+      generatedUser,
+      expect.anything()
+    );
   });
 });

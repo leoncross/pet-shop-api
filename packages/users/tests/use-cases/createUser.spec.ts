@@ -31,11 +31,16 @@ describe('createUser', () => {
       },
     };
 
-    userRepository.create = jest.fn().mockResolvedValue({ ...input, id: input.email });
+    userRepository.create = jest
+      .fn()
+      .mockResolvedValue({ ...input, id: input.email });
 
     const res = await createUser(input, context);
 
-    expect(userRepository.create).toHaveBeenCalledWith({ ...input, id: input.email });
+    expect(userRepository.create).toHaveBeenCalledWith({
+      ...input,
+      id: input.email,
+    });
     expect(res).toEqual({ ...input, id: input.email });
   });
 
@@ -55,7 +60,7 @@ describe('createUser', () => {
     userRepository.create = jest.fn().mockRejectedValue(new Error());
 
     await expect(
-      createUser(invalidInput as CreateUserInput, context),
+      createUser(invalidInput as CreateUserInput, context)
     ).rejects.toThrowError();
   });
 });
