@@ -1,4 +1,6 @@
 module.exports = {
-  preset: 'ts-jest',
-  testMatch: ['<rootDir>/**/_tests_/**/*.ts', '<rootDir>/**/*.spec.ts'],
+  "collectCoverage": true,
+  projects: [
+    './packages/users/jest.config.js',
+  ],
 };

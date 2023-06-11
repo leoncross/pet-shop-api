@@ -1,6 +1,6 @@
-import { getUserById, GetUserByIdInput } from '../../../src/use-cases/getUserById';
-import { UserRepository } from '../../../src/repositories/UserRepository';
-import { Context } from '../../../types';
+import { getUserById, GetUserByIdInput } from '../../src/use-cases/getUserById';
+import { UserRepository } from '../../src/repositories/UserRepository';
+import { Context } from '../../types';
 
 describe('getUserById', () => {
   let userRepository: UserRepository;

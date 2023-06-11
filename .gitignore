@@ -4,10 +4,10 @@
 dist
 tmp
 /out-tsc
+**/zipped-lambdas
 
 # dependencies
-pet-shop-api/node_modules
-**/node_modules
+**/**/node_modules/
 
 # IDEs and editors
 /.idea

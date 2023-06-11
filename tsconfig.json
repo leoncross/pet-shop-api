@@ -1,13 +1,21 @@
 {
   "extends": "@sindresorhus/tsconfig",
   "compilerOptions": {
-    "declaration": false,
-    "outDir": "./build",
+    "declaration": true,
     "sourceMap": true,
     "target": "ES2021",
     "typeRoots": [
       "./node_modules/@types",
+      "./node_modules/.store@types",
       "./types"
     ]
-  }
+  },
+  "references": [
+    {
+      "path": "./packages/users/tsconfig.json"
+    },
+    {
+      "path": "./packages/orders/tsconfig.json"
+    }
+  ]
 }

@@ -1,7 +1,7 @@
-import { updateUser, UpdateUserInput } from '../../../src/use-cases/updateUser';
-import { UserRepository } from '../../../src/repositories/UserRepository';
-import { Context } from '../../../types';
-import { User } from '../../../../../types/User';
+import { updateUser, UpdateUserInput } from '../../src/use-cases/updateUser';
+import { UserRepository } from '../../src/repositories/UserRepository';
+import { Context } from '../../types';
+import { User } from '../../../../types/User';
 
 describe('updateUser', () => {
   let userRepository: UserRepository;

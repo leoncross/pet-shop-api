@@ -1,8 +1,8 @@
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
-import { UserRepository } from '../../../src/repositories/UserRepository';
-import { PartialUser, User } from '../../../../../types/User';
+import { UserRepository } from '../../src/repositories/UserRepository';
+import { PartialUser, User } from '../../../../types/User';
 
 describe('UserRepository', () => {
   let userRepository: UserRepository;

@@ -1,6 +1,6 @@
-import { createUser, CreateUserInput } from '../../../src/use-cases/createUser';
-import { UserRepository } from '../../../src/repositories/UserRepository';
-import { Context } from '../../../types';
+import { createUser, CreateUserInput } from '../../src/use-cases/createUser';
+import { UserRepository } from '../../src/repositories/UserRepository';
+import { Context } from '../../types';
 
 describe('createUser', () => {
   let userRepository: UserRepository;
