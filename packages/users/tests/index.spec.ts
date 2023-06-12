@@ -4,7 +4,7 @@ import {
   Context,
 } from 'aws-lambda';
 import * as usecase from '../src/use-cases';
-import { userHandler } from '../index';
+import { handler } from '../index';
 import { generateUser, generateUserId } from './helpers';
 
 jest.mock('../src/repositories/UserRepository');
@@ -31,10 +31,10 @@ describe('userHandler', () => {
       httpMethod: 'GET',
     } as APIGatewayProxyEvent;
 
-    const result = (await userHandler(
+    const result = (await handler(
       event,
       context,
-      cb
+      cb,
     )) as APIGatewayProxyResult;
 
     expect(result.statusCode).toBe(404);
@@ -52,10 +52,10 @@ describe('userHandler', () => {
     getUserByIdValidationSpy.mockReturnValue({ id: userId });
     getUserByIdSpy.mockResolvedValue(generatedUser);
 
-    const result = (await userHandler(
+    const result = (await handler(
       event,
       context,
-      cb
+      cb,
     )) as APIGatewayProxyResult;
 
     expect(result.statusCode).toBe(200);
@@ -65,7 +65,7 @@ describe('userHandler', () => {
     });
     expect(usecase.getUserById).toHaveBeenCalledWith(
       { id: userId },
-      expect.anything()
+      expect.anything(),
     );
   });
 
@@ -81,10 +81,10 @@ describe('userHandler', () => {
     createUserValidationSpy.mockReturnValue(generatedUser);
     createUserSpy.mockResolvedValue(generatedUser);
 
-    const result = (await userHandler(
+    const result = (await handler(
       event,
       context,
-      cb
+      cb,
     )) as APIGatewayProxyResult;
 
     expect(result.statusCode).toBe(200);
@@ -92,7 +92,7 @@ describe('userHandler', () => {
     expect(usecase.validations.createUser).toHaveBeenCalledWith(generatedUser);
     expect(usecase.createUser).toHaveBeenCalledWith(
       generatedUser,
-      expect.anything()
+      expect.anything(),
     );
   });
 
@@ -110,21 +110,21 @@ describe('userHandler', () => {
     updateUserValidationSpy.mockReturnValue(generatedUser);
     updateUserSpy.mockResolvedValue(generatedUser);
 
-    const result = (await userHandler(
+    const result = (await handler(
       event,
       context,
-      cb
+      cb,
     )) as APIGatewayProxyResult;
 
     expect(result.statusCode).toBe(200);
     expect(JSON.parse(result.body)).toEqual(generatedUser);
     expect(usecase.validations.updateUser).toHaveBeenCalledWith(
       userId,
-      generatedUser
+      generatedUser,
     );
     expect(usecase.updateUser).toHaveBeenCalledWith(
       generatedUser,
-      expect.anything()
+      expect.anything(),
     );
   });
 });

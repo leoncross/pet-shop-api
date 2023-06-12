@@ -8,11 +8,13 @@ const successResult = (value: unknown) => ({
   body: JSON.stringify(value),
 });
 
-export const userHandler: APIGatewayProxyHandler = async (
-  event: APIGatewayProxyEvent
+export const handler: APIGatewayProxyHandler = async (
+  event: APIGatewayProxyEvent,
 ) => {
   try {
-    const { httpMethod, path, pathParameters = {}, body } = event;
+    const {
+      httpMethod, path, pathParameters = {}, body,
+    } = event;
 
     if (!path.includes('/users')) {
       return {
@@ -47,7 +49,7 @@ export const userHandler: APIGatewayProxyHandler = async (
       case 'PUT': {
         const input = usecase.validations.updateUser(
           pathParameters?.['id'],
-          requestBody
+          requestBody,
         );
         const user = await usecase.updateUser(input, context);
         return successResult(user);
