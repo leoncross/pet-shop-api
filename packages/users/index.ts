@@ -47,7 +47,7 @@ export const handler: APIGatewayProxyHandler = async (
       case 'PUT': {
         const input = usecase.validations.updateUser(
           pathParameters?.['id'],
-          requestBody
+          requestBody,
         );
         const user = await usecase.updateUser(input, context);
         return successResult(user);
