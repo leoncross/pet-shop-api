@@ -11,79 +11,6 @@ Resources:
           - REGIONAL
       FailOnWarnings: 'false'
 
-  UsersFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: index.handler
-      Runtime: nodejs14.x
-      CodeUri: s3://pet-shop-api-deployment-bucket/users.zip
-      Events:
-        Users:
-          Type: Api
-          Properties:
-            Path: /users
-            Method: ANY
-            RestApiId: !Ref PetShopApi
-
-  OrdersFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: index.handler
-      Runtime: nodejs14.x
-      CodeUri: s3://pet-shop-api-deployment-bucket/orders.zip
-      Events:
-        Orders:
-          Type: Api
-          Properties:
-            Path: /orders
-            Method: ANY
-            RestApiId: !Ref PetShopApi
-
-  UsersResource:
-    Type: "AWS::ApiGateway::Resource"
-    Properties:
-      ParentId: !GetAtt
-        - PetShopApi
-        - RootResourceId
-      PathPart: users
-      RestApiId: !Ref PetShopApi
-
-  OrdersResource:
-    Type: "AWS::ApiGateway::Resource"
-    Properties:
-      ParentId: !GetAtt
-        - PetShopApi
-        - RootResourceId
-      PathPart: orders
-      RestApiId: !Ref PetShopApi
-
-  UsersAnyMethod:
-    Type: "AWS::ApiGateway::Method"
-    Properties:
-      HttpMethod: ANY
-      AuthorizationType: NONE
-      ApiKeyRequired: false
-      ResourceId: !Ref UsersResource
-      RestApiId: !Ref PetShopApi
-      Integration:
-        Type: AWS_PROXY
-        IntegrationHttpMethod: ANY
-        Uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${UsersFunction.Arn}/invocations"
-
-  OrdersAnyMethod:
-    Type: "AWS::ApiGateway::Method"
-    Properties:
-      HttpMethod: ANY
-      AuthorizationType: NONE
-      ApiKeyRequired: false
-      ResourceId: !Ref OrdersResource
-      RestApiId: !Ref PetShopApi
-      Integration:
-        Type: AWS_PROXY
-        IntegrationHttpMethod: ANY
-        Uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrdersFunction.Arn}/invocations"
 
   PetShopApiDeployment:
     Type: 'AWS::ApiGateway::Deployment'
@@ -106,6 +33,87 @@ Resources:
       StageName: prod
       RestApiId: !Ref PetShopApi
       DeploymentId: !Ref PetShopApiDeployment
+
+# ------------------------------------
+#           Users Endpoint
+# ------------------------------------
+
+  UsersFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs14.x
+      CodeUri: s3://pet-shop-api-deployment-bucket/zipped-lambdas/users.zip
+      Events:
+        Users:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: ANY
+            RestApiId: !Ref PetShopApi
+  UsersResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt
+        - PetShopApi
+        - RootResourceId
+      PathPart: users
+      RestApiId: !Ref PetShopApi
+  UsersAnyMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      HttpMethod: ANY
+      AuthorizationType: NONE
+      ApiKeyRequired: false
+      ResourceId: !Ref UsersResource
+      RestApiId: !Ref PetShopApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: ANY
+        Uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${UsersFunction.Arn}/invocations"
+
+  # ------------------------------------
+  #           Orders Endpoint
+  # ------------------------------------
+
+  OrdersFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs14.x
+      CodeUri: s3://pet-shop-api-deployment-bucket/zipped-lambdas/orders.zip
+      Events:
+        Orders:
+          Type: Api
+          Properties:
+            Path: /orders
+            Method: ANY
+            RestApiId: !Ref PetShopApi
+  OrdersResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt
+        - PetShopApi
+        - RootResourceId
+      PathPart: orders
+      RestApiId: !Ref PetShopApi
+  OrdersAnyMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      HttpMethod: ANY
+      AuthorizationType: NONE
+      ApiKeyRequired: false
+      ResourceId: !Ref OrdersResource
+      RestApiId: !Ref PetShopApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: ANY
+        Uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrdersFunction.Arn}/invocations"
+
+# ------------------------------------
+# ------------------------------------
 
 Outputs:
   RestApiId:
