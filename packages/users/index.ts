@@ -9,12 +9,10 @@ const successResult = (value: unknown) => ({
 });
 
 export const handler: APIGatewayProxyHandler = async (
-  event: APIGatewayProxyEvent,
+  event: APIGatewayProxyEvent
 ) => {
   try {
-    const {
-      httpMethod, path, pathParameters = {}, body,
-    } = event;
+    const { httpMethod, path, pathParameters = {}, body } = event;
 
     if (!path.includes('/users')) {
       return {

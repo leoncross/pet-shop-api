@@ -8,7 +8,8 @@
     "lint:fix": "prettier --write 'packages/**/*.ts'",
     "test": "npx --workspaces --no-install npm run test",
     "build": "npx --workspaces --no-install npm run build",
-    "bundle": "bash ./scripts/bundle-lambdas.sh"
+    "bundle": "bash ./scripts/bundle-lambdas.sh",
+    "prepare": "husky install"
   },
   "author": "leoncross <leon@lscross.co.uk>",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "eslint": "^8.1.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-plugin-import": "^2.24.2",
+    "husky": "^8.0.3",
     "jest": "^29.5.0",
     "prettier": "2.6.2",
     "ts-jest": "^29.1.0",
