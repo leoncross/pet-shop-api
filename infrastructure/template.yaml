@@ -1,13 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Resources:
-  ApiGateway:
+  PetShopApiStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: ./api-gateway.yaml
-
-  LambdaFunctions:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: ./lambda.yaml
-      Parameters:
-        PetShopApi: !GetAtt ApiGateway.Outputs.RestApiId
+      TemplateURL: https://s3.amazonaws.com/pet-shop-api-deployment-bucket/api.yaml
