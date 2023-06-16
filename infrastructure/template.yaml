@@ -1,6 +1,14 @@
 AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    Description: The environment to deploy to (dev or prod)
+
 Resources:
   PetShopApiStack:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://s3.amazonaws.com/pet-shop-api-deployment-bucket/api.yaml
+      Parameters:
+        Environment: !Ref Environment

@@ -1,5 +1,11 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  Environment:
+    Type: String
+    Description: The environment to deploy to (dev or prod)
+
 Resources:
   PetShopApi:
     Type: AWS::ApiGateway::RestApi
@@ -43,7 +49,9 @@ Resources:
     Properties:
       Handler: index.handler
       Runtime: nodejs14.x
-      CodeUri: s3://pet-shop-api-deployment-bucket/zipped-lambdas/users.zip
+      CodeUri:
+        Bucket: pet-shop-api-deployment-bucket
+        Key: !Sub 'zipped-lambdas/${Environment}/users.zip'
       Events:
         Users:
           Type: Api
@@ -82,7 +90,9 @@ Resources:
     Properties:
       Handler: index.handler
       Runtime: nodejs14.x
-      CodeUri: s3://pet-shop-api-deployment-bucket/zipped-lambdas/orders.zip
+      CodeUri:
+        Bucket: pet-shop-api-deployment-bucket
+        Key: !Sub 'zipped-lambdas/${Environment}/orders.zip'
       Events:
         Orders:
           Type: Api

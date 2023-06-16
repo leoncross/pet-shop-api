@@ -27,14 +27,19 @@ Now we will upload our Lambda function .zip files and YAML templates to the S3 b
 Note: to create the zip files, run `npm run bundle`
 
 ```
-aws s3 cp ./zipped-lambdas s3://pet-shop-api-deployment-bucket/zipped-lambdas --recursive
+aws s3 cp ./zipped-lambdas s3://pet-shop-api-deployment-bucket/zipped-lambdas/dev --recursive
+aws s3 cp ./zipped-lambdas s3://pet-shop-api-deployment-bucket/zipped-lambdas/prod --recursive
 aws s3 cp ./infrastructure/api.yaml s3://pet-shop-api-deployment-bucket/api.yaml
 ```
 
 # Deploy PetShopApiStack
 Now, you can use AWS CloudFormation to deploy your API Gateway and Lambda functions. You'll need to replace `<YourStackName>` with a name for your CloudFormation stack, and `<YourBucketName>` with the name of your S3 bucket:
 ```
-aws cloudformation create-stack --stack-name PetShopApiStack --template-body file://infrastructure/template.yaml --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND
+// dev:
+aws cloudformation create-stack --stack-name PetShopApiStack --template-body file://infrastructure/template.yaml --parameters ParameterKey=Environment,ParameterValue=dev --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND
+
+// prod:
+aws cloudformation create-stack --stack-name PetShopApiStack --template-body file://infrastructure/template.yaml --parameters ParameterKey=Environment,ParameterValue=prod --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND
 ```
 
 # Check Stack Status
@@ -48,10 +53,15 @@ The output will include a `StackStatus` field that tells you the current status 
 # Update Stack
 If you make changes to your templates and need to update your stack, you can use the following command:
 ```
-aws s3 cp ./zipped-lambdas s3://pet-shop-api-deployment-bucket/zipped-lambdas --recursive
+aws s3 cp ./zipped-lambdas s3://pet-shop-api-deployment-bucket/zipped-lambdas/dev --recursive
+aws s3 cp ./zipped-lambdas s3://pet-shop-api-deployment-bucket/zipped-lambdas/prod --recursive
 aws s3 cp ./infrastructure/api.yaml s3://pet-shop-api-deployment-bucket/api.yaml
 
-aws cloudformation update-stack --stack-name PetShopApiStack --template-body file://infrastructure/template.yaml --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND
+// dev:
+aws cloudformation update-stack --stack-name PetShopApiStack --template-body file://infrastructure/template.yaml --parameters ParameterKey=Environment,ParameterValue=dev --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND
+
+// prod:
+aws cloudformation update-stack --stack-name PetShopApiStack --template-body file://infrastructure/template.yaml --parameters ParameterKey=Environment,ParameterValue=prod --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND
 ```
 
 # Delete Stack
