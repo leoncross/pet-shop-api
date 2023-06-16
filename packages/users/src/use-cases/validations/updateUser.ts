@@ -1,29 +1,29 @@
-import { User, Address, PartialUser } from '../../../../../types/User';
+import { User, Address, PartialUser } from '../../../../../types/User'
 
 function validateString(value: unknown, propertyName: string): string {
   if (typeof value !== 'string') {
-    throw new Error(`Invalid or missing ${propertyName}`);
+    throw new Error(`Invalid or missing ${propertyName}`)
   }
 
-  return value;
+  return value
 }
 
 function validateOptionalString(value: unknown): string | undefined {
   if (typeof value !== 'string') {
-    return undefined;
+    return undefined
   }
 
-  return value;
+  return value
 }
 
 function validateAddress(input: Partial<Address>): Partial<Address> {
-  const { street, city, state, postalCode, country } = input;
+  const { street, city, state, postalCode, country } = input
 
-  const validatedStreet = validateOptionalString(street);
-  const validatedCity = validateOptionalString(city);
-  const validatedState = validateOptionalString(state);
-  const validatedPostalCode = validateOptionalString(postalCode);
-  const validatedCountry = validateOptionalString(country);
+  const validatedStreet = validateOptionalString(street)
+  const validatedCity = validateOptionalString(city)
+  const validatedState = validateOptionalString(state)
+  const validatedPostalCode = validateOptionalString(postalCode)
+  const validatedCountry = validateOptionalString(country)
 
   return {
     street: validatedStreet,
@@ -31,14 +31,11 @@ function validateAddress(input: Partial<Address>): Partial<Address> {
     state: validatedState,
     postalCode: validatedPostalCode,
     country: validatedCountry,
-  };
+  }
 }
 
-export const updateUser = (
-  id: string | undefined,
-  input: Partial<User>
-): PartialUser => {
-  const { firstName, lastName, email, address, phone } = input;
+export const updateUser = (id: string | undefined, input: Partial<User>): PartialUser => {
+  const { firstName, lastName, email, address, phone } = input
 
   return {
     id: validateString(id, 'id'),
@@ -47,5 +44,5 @@ export const updateUser = (
     email: validateOptionalString(email),
     phone: validateOptionalString(phone),
     address: validateAddress(address as Partial<Address>),
-  };
-};
+  }
+}

@@ -1,6 +1,6 @@
-import { UserRepository } from './src/repositories/UserRepository';
+import { UserRepository } from './src/repositories/UserRepository'
 
 type Context = {
-  logger: {};
-  userRepository: UserRepository;
-};
+  logger: {}
+  userRepository: UserRepository
+}

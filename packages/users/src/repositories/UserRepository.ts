@@ -1,58 +1,52 @@
-import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import {
-  Address,
-  DynamodbUser,
-  PartialDynamodbUser,
-  PartialUser,
-  User,
-} from '../../../../types/User';
-import { get } from '../../config';
+import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
+import { Address, DynamodbUser, PartialDynamodbUser, PartialUser, User } from '../../../../types/User'
+import { get } from '../../config'
 
 export class UserRepository {
-  client: DynamoDBDocument;
+  client: DynamoDBDocument
 
-  private readonly tableName: string;
+  private readonly tableName: string
 
   constructor() {
-    this.tableName = get('dbTableName');
-    const dbClient = new DynamoDBClient({});
-    this.client = DynamoDBDocument.from(dbClient);
+    this.tableName = get('dbTableName')
+    const dbClient = new DynamoDBClient({})
+    this.client = DynamoDBDocument.from(dbClient)
   }
 
   private toDynamoDBUser(user: PartialUser): PartialDynamodbUser {
-    const { address, ...restUser } = user;
+    const { address, ...restUser } = user
 
     const dynamodbUser: PartialDynamodbUser = {
       ...restUser,
       pk: `USER#${user.id}`,
       sk: `USER#${user.id}`,
-    };
+    }
 
     if (address) {
       dynamodbUser.address = {
         ...(dynamodbUser.address as Partial<Address>),
         ...address,
-      };
+      }
     }
 
-    return dynamodbUser;
+    return dynamodbUser
   }
 
   private fromDynamoDBUser(dynamodbUser: DynamodbUser): User {
-    const { pk, sk, ...user } = dynamodbUser;
-    return user;
+    const { pk, sk, ...user } = dynamodbUser
+    return user
   }
 
   async create(user: User): Promise<User> {
-    const dynamodbUser = this.toDynamoDBUser(user);
+    const dynamodbUser = this.toDynamoDBUser(user)
 
     await this.client.put({
       TableName: this.tableName,
       Item: dynamodbUser,
-    });
+    })
 
-    return user;
+    return user
   }
 
   async get(userId: string): Promise<User | null> {
@@ -62,17 +56,17 @@ export class UserRepository {
         pk: `USER#${userId}`,
         sk: `USER#${userId}`,
       },
-    });
+    })
 
     if (!result.Item) {
-      return null;
+      return null
     }
 
-    return this.fromDynamoDBUser(result.Item as DynamodbUser);
+    return this.fromDynamoDBUser(result.Item as DynamodbUser)
   }
 
   async update(user: PartialUser): Promise<User> {
-    const dynamodbUser = this.toDynamoDBUser(user);
+    const dynamodbUser = this.toDynamoDBUser(user)
 
     const updatedUser = await this.client.update({
       TableName: this.tableName,
@@ -81,8 +75,8 @@ export class UserRepository {
         sk: dynamodbUser.sk,
       },
       ReturnValues: 'ALL_NEW',
-    });
+    })
 
-    return this.fromDynamoDBUser(updatedUser.Attributes as DynamodbUser);
+    return this.fromDynamoDBUser(updatedUser.Attributes as DynamodbUser)
   }
 }

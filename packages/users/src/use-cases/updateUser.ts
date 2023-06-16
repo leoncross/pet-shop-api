@@ -1,16 +1,13 @@
-import { PartialUser, User } from '../../../../types/User';
-import { Context } from '../../types';
+import { PartialUser, User } from '../../../../types/User'
+import { Context } from '../../types'
 
-export type UpdateUserInput = PartialUser;
-export const updateUser = async (
-  input: UpdateUserInput,
-  context: Context
-): Promise<User | null> => {
-  const existingUser = await context.userRepository.get(input.id);
+export type UpdateUserInput = PartialUser
+export const updateUser = async (input: UpdateUserInput, context: Context): Promise<User | null> => {
+  const existingUser = await context.userRepository.get(input.id)
 
   if (!existingUser) {
-    return null;
+    return null
   }
 
-  return context.userRepository.update({ ...input, ...existingUser });
-};
+  return context.userRepository.update({ ...input, ...existingUser })
+}

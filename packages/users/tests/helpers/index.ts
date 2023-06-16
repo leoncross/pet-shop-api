@@ -1,9 +1,9 @@
-import { v4 as uuidv4 } from 'uuid';
-import { User } from '../../../../types/User';
+import { v4 as uuidv4 } from 'uuid'
+import { User } from '../../../../types/User'
 
-export const generateUserId = () => uuidv4();
+export const generateUserId = () => uuidv4()
 export const generateUser = (userData?: Partial<User>): User => {
-  const id = generateUserId();
+  const id = generateUserId()
 
   const defaultUser: User = {
     id,
@@ -18,7 +18,7 @@ export const generateUser = (userData?: Partial<User>): User => {
       postalCode: '12345',
       country: 'Country',
     },
-  };
+  }
 
-  return { ...defaultUser, ...userData };
-};
+  return { ...defaultUser, ...userData }
+}

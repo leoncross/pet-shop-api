@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run lint:fix && git status --porcelain | awk '$1 == "M" { print $2 }' | xargs git add
+npm run lint

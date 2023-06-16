@@ -1,8 +1,7 @@
-import { Context } from '../../types';
+import { Context } from '../../types'
 
 export interface GetUserByIdInput {
-  id: string;
+  id: string
 }
 
-export const getUserById = async (input: GetUserByIdInput, context: Context) =>
-  context.userRepository.get(input.id);
+export const getUserById = async (input: GetUserByIdInput, context: Context) => context.userRepository.get(input.id)

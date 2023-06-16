@@ -1,7 +1,7 @@
-import { createUser } from './createUser';
-import { getUserById } from './getUserById';
-import { updateUser } from './updateUser';
+import { createUser } from './createUser'
+import { getUserById } from './getUserById'
+import { updateUser } from './updateUser'
 
-import * as validations from './validations';
+import * as validations from './validations'
 
-export { validations, createUser, getUserById, updateUser };
+export { validations, createUser, getUserById, updateUser }

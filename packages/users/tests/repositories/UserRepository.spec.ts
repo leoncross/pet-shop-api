@@ -1,23 +1,23 @@
-import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 
-import { UserRepository } from '../../src/repositories/UserRepository';
-import { PartialUser, User } from '../../../../types/User';
+import { UserRepository } from '../../src/repositories/UserRepository'
+import { PartialUser, User } from '../../../../types/User'
 
 describe('UserRepository', () => {
-  let userRepository: UserRepository;
-  let client: DynamoDBDocument;
+  let userRepository: UserRepository
+  let client: DynamoDBDocument
 
   beforeEach(() => {
-    const dbClient = new DynamoDBClient({});
-    client = DynamoDBDocument.from(dbClient);
-    userRepository = new UserRepository();
-    userRepository.client = client;
-  });
+    const dbClient = new DynamoDBClient({})
+    client = DynamoDBDocument.from(dbClient)
+    userRepository = new UserRepository()
+    userRepository.client = client
+  })
 
   describe('create', () => {
     test('should create a new user', async () => {
-      client.put = jest.fn().mockReturnValue(Promise.resolve({}));
+      client.put = jest.fn().mockReturnValue(Promise.resolve({}))
 
       const user: User = {
         id: '123',
@@ -32,9 +32,9 @@ describe('UserRepository', () => {
           postalCode: '12345',
           country: 'Country',
         },
-      };
+      }
 
-      const createdUser = await userRepository.create(user);
+      const createdUser = await userRepository.create(user)
 
       expect(client.put).toHaveBeenCalledWith({
         TableName: 'pet-shop',
@@ -54,10 +54,10 @@ describe('UserRepository', () => {
             country: 'Country',
           },
         },
-      });
-      expect(createdUser).toEqual(user);
-    });
-  });
+      })
+      expect(createdUser).toEqual(user)
+    })
+  })
 
   describe('get', () => {
     test('should retrieve an existing user', async () => {
@@ -78,11 +78,11 @@ describe('UserRepository', () => {
               country: 'Country',
             },
           },
-        })
-      );
+        }),
+      )
 
-      const userId = '123';
-      const existingUser = await userRepository.get(userId);
+      const userId = '123'
+      const existingUser = await userRepository.get(userId)
 
       expect(client.get).toHaveBeenCalledWith({
         TableName: 'pet-shop',
@@ -90,7 +90,7 @@ describe('UserRepository', () => {
           pk: 'USER#123',
           sk: 'USER#123',
         },
-      });
+      })
       expect(existingUser).toEqual({
         id: '123',
         firstName: 'John',
@@ -103,14 +103,14 @@ describe('UserRepository', () => {
           postalCode: '12345',
           country: 'Country',
         },
-      });
-    });
+      })
+    })
 
     test('should return null for a non-existing user', async () => {
-      client.get = jest.fn().mockReturnValue(Promise.resolve({}));
+      client.get = jest.fn().mockReturnValue(Promise.resolve({}))
 
-      const userId = '123';
-      const existingUser = await userRepository.get(userId);
+      const userId = '123'
+      const existingUser = await userRepository.get(userId)
 
       expect(client.get).toHaveBeenCalledWith({
         TableName: 'pet-shop',
@@ -118,10 +118,10 @@ describe('UserRepository', () => {
           pk: 'USER#123',
           sk: 'USER#123',
         },
-      });
-      expect(existingUser).toBeNull();
-    });
-  });
+      })
+      expect(existingUser).toBeNull()
+    })
+  })
 
   describe('update', () => {
     test('should update an existing user', async () => {
@@ -142,8 +142,8 @@ describe('UserRepository', () => {
               country: 'Updated Country',
             },
           },
-        })
-      );
+        }),
+      )
 
       const updatedUser: PartialUser = {
         id: '123',
@@ -154,9 +154,9 @@ describe('UserRepository', () => {
           postalCode: '54321',
           country: 'Updated Country',
         },
-      };
+      }
 
-      const result = await userRepository.update(updatedUser);
+      const result = await userRepository.update(updatedUser)
 
       expect(client.update).toHaveBeenCalledWith({
         TableName: 'pet-shop',
@@ -165,7 +165,7 @@ describe('UserRepository', () => {
           sk: 'USER#123',
         },
         ReturnValues: 'ALL_NEW',
-      });
+      })
       expect(result).toEqual({
         id: '123',
         firstName: 'John',
@@ -178,7 +178,7 @@ describe('UserRepository', () => {
           postalCode: '54321',
           country: 'Updated Country',
         },
-      });
-    });
-  });
-});
+      })
+    })
+  })
+})

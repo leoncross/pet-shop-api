@@ -1,22 +1,22 @@
-import { CreateUserInput } from '../createUser';
-import { Address } from '../../../../../types/User';
+import { CreateUserInput } from '../createUser'
+import { Address } from '../../../../../types/User'
 
 function validateString(value: unknown, propertyName: string): string {
   if (typeof value !== 'string') {
-    throw new Error(`Invalid or missing ${propertyName}`);
+    throw new Error(`Invalid or missing ${propertyName}`)
   }
 
-  return value;
+  return value
 }
 
 function validateAddress(input: Partial<Address>): Address {
-  const { street, city, state, postalCode, country } = input;
+  const { street, city, state, postalCode, country } = input
 
-  const validatedStreet = validateString(street, 'street');
-  const validatedCity = validateString(city, 'city');
-  const validatedState = validateString(state, 'state');
-  const validatedPostalCode = validateString(postalCode, 'postalCode');
-  const validatedCountry = validateString(country, 'country');
+  const validatedStreet = validateString(street, 'street')
+  const validatedCity = validateString(city, 'city')
+  const validatedState = validateString(state, 'state')
+  const validatedPostalCode = validateString(postalCode, 'postalCode')
+  const validatedCountry = validateString(country, 'country')
 
   return {
     street: validatedStreet,
@@ -24,13 +24,11 @@ function validateAddress(input: Partial<Address>): Address {
     state: validatedState,
     postalCode: validatedPostalCode,
     country: validatedCountry,
-  };
+  }
 }
 
-export const createUser = (
-  input: Partial<CreateUserInput>
-): CreateUserInput => {
-  const { firstName, lastName, email, address, phone } = input;
+export const createUser = (input: Partial<CreateUserInput>): CreateUserInput => {
+  const { firstName, lastName, email, address, phone } = input
 
   return {
     firstName: validateString(firstName, 'firstName'),
@@ -38,5 +36,5 @@ export const createUser = (
     email: validateString(email, 'email'),
     phone: validateString(phone, 'phone'),
     address: validateAddress(address as Partial<Address>),
-  };
-};
+  }
+}
