@@ -12,3 +12,10 @@ Resources:
       TemplateURL: https://s3.amazonaws.com/pet-shop-api-deployment-bucket/api.yaml
       Parameters:
         Environment: !Ref Environment
+
+  PetShopDynamoDBStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/pet-shop-api-deployment-bucket/dynamodb.yaml
+      Parameters:
+        Environment: !Ref Environment

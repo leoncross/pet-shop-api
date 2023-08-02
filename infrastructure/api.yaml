@@ -47,6 +47,7 @@ Resources:
   UsersFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub 'pet-shop-api-users-${Environment}'  # Dynamic name based on environment
       Handler: index.handler
       Runtime: nodejs14.x
       CodeUri:
@@ -88,6 +89,7 @@ Resources:
   OrdersFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub 'pet-shop-api-orders-${Environment}'  # Dynamic name based on environment
       Handler: index.handler
       Runtime: nodejs14.x
       CodeUri:

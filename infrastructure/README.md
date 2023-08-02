@@ -55,7 +55,7 @@ If you make changes to your templates and need to update your stack, you can use
 ```
 aws s3 cp ./zipped-lambdas s3://pet-shop-api-deployment-bucket/zipped-lambdas/dev --recursive
 aws s3 cp ./zipped-lambdas s3://pet-shop-api-deployment-bucket/zipped-lambdas/prod --recursive
-aws s3 cp ./infrastructure/api.yaml s3://pet-shop-api-deployment-bucket/api.yaml
+aws s3 cp ./infrastructure/ s3://pet-shop-api-deployment-bucket/ --recursive --exclude "*" --include "*.yaml"
 
 // dev:
 aws cloudformation update-stack --stack-name PetShopApiStack --template-body file://infrastructure/template.yaml --parameters ParameterKey=Environment,ParameterValue=dev --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND

@@ -4,7 +4,6 @@ set -e
 
 STACK_NAME="PetShopApiStack"
 TEMPLATE_FILE="./infrastructure/template.yaml"
-API_FILE="./infrastructure/api.yaml"
 S3_BUCKET="pet-shop-api-deployment-bucket"
 ENVIRONMENT=$1  # Set environment from script argument
 DIR="$(pwd)"
@@ -21,11 +20,11 @@ aws s3 mb "s3://$S3_BUCKET" || true  # Bucket creation may fail if it already ex
 
 # Zip and upload Lambda functions to S3 bucket
 cd "$DIR/zipped-lambdas" || exit
-aws s3 cp . "s3://pet-shop-api-deployment-bucket/zipped-lambdas/$ENVIRONMENT" --recursive
+aws s3 cp . "s3://pet-shop-api-deployment-bucket/zipped-lambdas/$ENVIRONMENT" --recursive --exclude "*" --include "*.zip"
 
-# Upload API definition to S3 bucket
+# Upload API yaml files to S3 bucket
 cd "$DIR"
-aws s3 cp "$API_FILE" "s3://$S3_BUCKET/api.yaml"
+aws s3 cp ./infrastructure/ s3://$S3_BUCKET/ --recursive --exclude "*" --include "*.yaml"
 
 # Check if stack exists
 STACK_EXISTS=$(aws cloudformation describe-stacks --stack-name "$STACK_NAME" || true)

@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    Description: The environment to deploy to (dev or prod)
+
+Resources:
+  PetShopTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 'pet-shop-${Environment}'
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST  # Use on-demand capacity mode
+
+Outputs:
+  PetShopTableArn:
+    Description: The ARN of the PetShop DynamoDB table
+    Value: !GetAtt PetShopTable.Arn

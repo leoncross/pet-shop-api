@@ -9,6 +9,7 @@ const successResult = (value: unknown) => ({
 })
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent) => {
+  console.log('not latest')
   try {
     const { httpMethod, path, pathParameters = {}, body } = event
 

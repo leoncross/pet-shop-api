@@ -11,8 +11,8 @@ type Configs = {
 }
 
 const config: Configs = {
-  apiKey: { default: 'asdfasdfasd' },
-  dbTableName: { default: 'pet-shop' },
+  apiKey: { default: 'asdfasdfasd', production: 'asdf' },
+  dbTableName: { default: 'pet-shop-dev', production: 'pet-shop-prod' },
 }
 
 export const get = <K extends keyof Configs>(key: K): Configs[K] extends EnvironmentValues<infer T> ? T : never => {
@@ -26,6 +26,7 @@ export const get = <K extends keyof Configs>(key: K): Configs[K] extends Environ
   const environmentValue = value[environment as keyof typeof value] as Configs[K] extends EnvironmentValues<infer T>
     ? T
     : never
+
   const defaultValue = value.default as Configs[K] extends EnvironmentValues<infer T> ? T : never
 
   if (!environmentValue && !defaultValue) {
