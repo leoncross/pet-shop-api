@@ -1,7 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda'
 import * as usecase from '../src/use-cases'
 import { handler } from '../index'
-import { generateProduct, generateProductId } from "./helpers";
+import { generateProduct, generateProductId } from './helpers'
 
 jest.mock('../src/repositories/ProductRepository')
 jest.mock('../src/use-cases')
@@ -32,7 +32,7 @@ describe('userHandler', () => {
   })
 
   it('handles GET method - GetProductById', async () => {
-    const productId  = generateProductId()
+    const productId = generateProductId()
     const event = {
       path: '/products',
       httpMethod: 'GET',
@@ -47,7 +47,7 @@ describe('userHandler', () => {
 
     expect(result.statusCode).toBe(200)
     expect(JSON.parse(result.body)).toEqual(generatedProduct)
-    expect(usecase.validations.getProductById).toHaveBeenCalledWith({ id: productId, })
+    expect(usecase.validations.getProductById).toHaveBeenCalledWith({ id: productId })
     expect(usecase.getProductById).toHaveBeenCalledWith({ id: productId }, expect.anything())
   })
 
@@ -58,8 +58,8 @@ describe('userHandler', () => {
       queryStringParameters: { category: 'RopeToy' },
     } as Partial<APIGatewayProxyEvent> as APIGatewayProxyEvent
 
-    const generatedProductOne = generateProduct({category: 'RopeToy'})
-    const generatedProductTwo = generateProduct({category: 'RopeToy'})
+    const generatedProductOne = generateProduct({ category: 'RopeToy' })
+    const generatedProductTwo = generateProduct({ category: 'RopeToy' })
     getProductByCategoryValidationSpy.mockReturnValue({ category: 'RopeToy' })
     getProductByCategorySpy.mockResolvedValue([generatedProductOne, generatedProductTwo])
 
