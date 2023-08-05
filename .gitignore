@@ -38,3 +38,7 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+
+# Script artifacts
+version_tracker.txt

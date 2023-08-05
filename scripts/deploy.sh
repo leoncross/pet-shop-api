@@ -43,14 +43,11 @@ fi
 update_lambda_functions() {
   latest_version=$1
 
-  # Get the folder names in the zipped-lambdas directory
-  endpoints=($(ls "$DIR/zipped-lambdas"))
+  # Get the .zip filenames in the zipped-lambdas directory
+  endpoints=($(ls "$DIR/zipped-lambdas" | grep '.zip'))
 
   for endpoint in "${endpoints[@]}"; do
-    # Remove the .zip extension from the endpoint
     endpoint_name="${endpoint%.zip}"
-
-    # Create the function name using the endpoint and environment
     function_name="pet-shop-api-$endpoint_name-$ENVIRONMENT"
 
     aws lambda update-function-code \
@@ -62,24 +59,35 @@ update_lambda_functions() {
   done
 }
 
-# Function to update Lambda aliases to the latest version
+# Function to create and/or update Lambda aliases to the latest version
 update_lambda_aliases() {
-  # Get the folder names in the zipped-lambdas directory
-  endpoints=($(ls "$DIR/zipped-lambdas"))
+  # Get the .zip filenames in the zipped-lambdas directory
+  endpoints=($(ls "$DIR/zipped-lambdas" | grep '.zip'))
 
   for endpoint in "${endpoints[@]}"; do
-    # Remove the .zip extension from the endpoint
     endpoint_name="${endpoint%.zip}"
-
-    # Create the function name using the endpoint and environment
     function_name="pet-shop-api-$endpoint_name-$ENVIRONMENT"
 
-    aws lambda update-alias \
-      --function-name "$function_name" \
-      --name "latest" \
-      --function-version "\$LATEST"  # Use $LATEST to always point to the latest version
+    # Check if the alias exists
+    alias_exists=$(aws lambda get-alias --function-name "$function_name" --name "latest" || true)
 
-    echo "Alias latest for function $function_name updated successfully"
+    if [[ -z "$alias_exists" ]]; then
+      # If alias does not exist, create one
+      aws lambda create-alias \
+        --function-name "$function_name" \
+        --name "latest" \
+        --function-version "\$LATEST"  # Use $LATEST to always point to the latest version
+
+      echo "Alias latest for function $function_name created successfully"
+    else
+      # If alias exists, update the existing alias
+      aws lambda update-alias \
+        --function-name "$function_name" \
+        --name "latest" \
+        --function-version "\$LATEST"  # Use $LATEST to always point to the latest version
+
+      echo "Alias latest for function $function_name updated successfully"
+    fi
   done
 }
 

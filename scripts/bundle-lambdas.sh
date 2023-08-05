@@ -16,13 +16,13 @@ echo $SEPARATOR
 echo "Installing all packages..."
 npm install
 
-# Build all packages using workspaces
-echo "Building all packages..."
-npx --workspaces --no-install npm run build
-
-# Install dependencies with linked strategy
-echo "Installing dependencies with linked strategy..."
-npm install --install-strategy=linked
+## Build all packages using workspaces
+#echo "Building all packages..."
+#npx --workspaces --no-install npm run build
+#
+## Install dependencies with linked strategy
+#echo "Installing dependencies with linked strategy..."
+#npm install --install-strategy=linked
 
 # Create the output directory if it doesn't exist
 echo "Preparing output directory..."
@@ -34,6 +34,7 @@ for package in packages/*; do
   echo "Processing package: $package"
   echo $SEPARATOR
 
+
   # Ensure that $package is a directory
   if [ -d "$package" ]; then
     # Extract the package name
@@ -42,6 +43,10 @@ for package in packages/*; do
 
     # Move into the package directory
     cd "$package"
+
+    # Install dependencies and build the package
+    npm install --workspaces=false --package-lock=false
+    npm run build --workspaces=false
 
     # Create a temporary directory with a unique name
     TEMP_DIR="$TEMP_DIR_PREFIX_$(date +%s)"
