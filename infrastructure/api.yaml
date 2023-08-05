@@ -23,6 +23,7 @@ Resources:
     DependsOn:
       - UsersAnyMethod
       - OrdersAnyMethod
+      - ProductsAnyMethod
     Properties:
       RestApiId: !Ref PetShopApi
 
@@ -124,6 +125,48 @@ Resources:
         Uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrdersFunction.Arn}/invocations"
 
+  # ------------------------------------
+  #           Products Endpoint
+  # ------------------------------------
+
+  ProductsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'pet-shop-api-products-${Environment}'  # Dynamic name based on environment
+      Handler: index.handler
+      Runtime: nodejs14.x
+      CodeUri:
+        Bucket: pet-shop-api-deployment-bucket
+        Key: !Sub 'zipped-lambdas/${Environment}/products.zip'
+      Events:
+        Products:
+          Type: Api
+          Properties:
+            Path: /products
+            Method: ANY
+            RestApiId: !Ref PetShopApi
+  ProductsResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt
+        - PetShopApi
+        - RootResourceId
+      PathPart: products
+      RestApiId: !Ref PetShopApi
+  ProductsAnyMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      HttpMethod: ANY
+      AuthorizationType: NONE
+      ApiKeyRequired: false
+      ResourceId: !Ref ProductsResource
+      RestApiId: !Ref PetShopApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: ANY
+        Uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProductsFunction.Arn}/invocations"
+
 # ------------------------------------
 # ------------------------------------
 
@@ -137,3 +180,6 @@ Outputs:
   OrdersFunctionArn:
     Description: The ARN of the OrdersFunction
     Value: !GetAtt OrdersFunction.Arn
+  ProductsFunctionArn:
+    Description: The ARN of the ProductsFunction
+    Value: !GetAtt ProductsFunction.Arn

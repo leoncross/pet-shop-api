@@ -1,3 +1,5 @@
+import { Address, User } from "./User";
+
 export type Product = {
   id: string; // same as `sk`
   category: string; // toy
@@ -16,7 +18,7 @@ export type Product = {
   };
 };
 
-export type DynamodbProduct = {
+export type DynamodbProduct = Product &{
   pk: string; // `PRODUCT#${id}`
   sk: string; // `CATEGORY#${category}`
 };
