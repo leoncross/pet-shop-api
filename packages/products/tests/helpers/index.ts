@@ -1,24 +1,27 @@
 import { v4 as uuidv4 } from 'uuid'
-import { User } from '../../../../types/User'
+import { Product } from "../../../../types/Product";
 
-export const generateUserId = () => uuidv4()
-export const generateUser = (userData?: Partial<User>): User => {
-  const id = generateUserId()
+export const generateProductId = () => uuidv4()
+export const generateProduct = (productData?: Partial<Product>): Product => {
+  const id = generateProductId()
 
-  const defaultUser: User = {
+  const defaultProduct: Product = {
     id,
-    firstName: 'John',
-    lastName: 'Doe',
-    email: `user${id}@example.com`,
-    phone: '1234567890',
-    address: {
-      street: '123 Main St',
-      city: 'City',
-      state: 'State',
-      postalCode: '12345',
-      country: 'Country',
-    },
+    category: "toy",
+    subcategory: "rope",
+    name: "Rope Toy",
+    slug: "rope-toy",
+    colour: "red",
+    description: "Durable pet rope toy",
+    price: 19.99,
+    quantityAvailable: 50,
+    showAsAvailable: true,
+    images: {
+      main: "main.jpg",
+      hover: "hover.jpg",
+      other: ["other1.jpg", "other2.jpg"]
+    }
   }
 
-  return { ...defaultUser, ...userData }
+  return { ...defaultProduct, ...productData }
 }

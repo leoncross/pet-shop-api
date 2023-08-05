@@ -1,7 +1,8 @@
 type EnvironmentValues<T> = {
-  dev?: T
-  production?: T
   local?: T
+  dev?: T
+  prod?: T
+  test?: T
   default?: T
 }
 
@@ -11,8 +12,8 @@ type Configs = {
 }
 
 const config: Configs = {
-  apiKey: { default: 'asdfasdfasd', production: 'asdf' },
-  dbTableName: { default: 'pet-shop-dev', production: 'pet-shop-prod' },
+  apiKey: { default: 'asdfasdfasd', prod: 'asdf' },
+  dbTableName: { dev: 'pet-shop-dev', prod: 'pet-shop-prod', test: 'pet-shop' },
 }
 
 export const get = <K extends keyof Configs>(key: K): Configs[K] extends EnvironmentValues<infer T> ? T : never => {

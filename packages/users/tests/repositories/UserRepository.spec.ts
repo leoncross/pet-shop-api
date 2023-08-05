@@ -4,6 +4,8 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import { UserRepository } from '../../src/repositories/UserRepository'
 import { PartialUser, User } from '../../../../types/User'
 
+import * as config from '../../config'
+
 describe('UserRepository', () => {
   let userRepository: UserRepository
   let client: DynamoDBDocument
@@ -37,7 +39,7 @@ describe('UserRepository', () => {
       const createdUser = await userRepository.create(user)
 
       expect(client.put).toHaveBeenCalledWith({
-        TableName: 'pet-shop',
+        TableName: config.get('dbTableName'),
         Item: {
           pk: 'USER#123',
           sk: 'USER#123',
@@ -85,7 +87,7 @@ describe('UserRepository', () => {
       const existingUser = await userRepository.get(userId)
 
       expect(client.get).toHaveBeenCalledWith({
-        TableName: 'pet-shop',
+        TableName: config.get('dbTableName'),
         Key: {
           pk: 'USER#123',
           sk: 'USER#123',
@@ -113,7 +115,7 @@ describe('UserRepository', () => {
       const existingUser = await userRepository.get(userId)
 
       expect(client.get).toHaveBeenCalledWith({
-        TableName: 'pet-shop',
+        TableName: config.get('dbTableName'),
         Key: {
           pk: 'USER#123',
           sk: 'USER#123',
@@ -159,7 +161,7 @@ describe('UserRepository', () => {
       const result = await userRepository.update(updatedUser)
 
       expect(client.update).toHaveBeenCalledWith({
-        TableName: 'pet-shop',
+        TableName: config.get('dbTableName'),
         Key: {
           pk: 'USER#123',
           sk: 'USER#123',
