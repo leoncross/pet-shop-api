@@ -50,12 +50,30 @@ update_lambda_functions() {
     endpoint_name="${endpoint%.zip}"
     function_name="pet-shop-api-$endpoint_name-$ENVIRONMENT"
 
-    aws lambda update-function-code \
+    # Try to update the Lambda function
+    update_output=$(aws lambda update-function-code \
       --function-name "$function_name" \
       --s3-bucket "$S3_BUCKET" \
-      --s3-key "zipped-lambdas/$ENVIRONMENT/$endpoint"
+      --s3-key "zipped-lambdas/$ENVIRONMENT/$endpoint" 2>&1)
 
-    echo "Updated Lambda function $function_name to version $latest_version"
+    # If the update fails because the function doesn't exist, create it instead
+    if echo "$update_output" | grep -q 'Function not found'; then
+      # Assuming that the role for the Lambda function already exists
+      role_arn="arn:aws:iam::291042150569:role/your-lambda-execution-role"
+
+      aws lambda create-function \
+        --function-name "$function_name" \
+        --runtime "nodejs14.x" \
+        --role "$role_arn" \
+        --handler "your-handler-file.handler" \
+        --code S3Bucket="$S3_BUCKET",S3Key="zipped-lambdas/$ENVIRONMENT/$endpoint" \
+        --memory-size 128 \
+        --timeout 15
+
+      echo "Created Lambda function $function_name with version $latest_version"
+    else
+      echo "Updated Lambda function $function_name to version $latest_version"
+    fi
   done
 }
 
