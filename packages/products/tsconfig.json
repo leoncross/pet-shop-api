@@ -2,7 +2,10 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "composite": true
+    "composite": true,
+    "paths": {
+      "@pet-shop-api/*": ["../../shared/*"]
+    }
   },
   "include": ["./index.ts","./src", "./config", "./tests"],
   "exclude": ["node_modules"],

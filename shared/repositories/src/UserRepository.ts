@@ -1,13 +1,13 @@
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
-import { Address, DynamodbUser, PartialDynamodbUser, PartialUser, User } from "../../../types/User";
+import { Address, DynamodbUser, PartialDynamodbUser, PartialUser, User } from '../../../types/User'
 
 export class UserRepository {
   client: DynamoDBDocument
 
   private readonly tableName: string
 
-  constructor(table:string) {
+  constructor(table: string) {
     this.tableName = table
     const dbClient = new DynamoDBClient({})
     this.client = DynamoDBDocument.from(dbClient)

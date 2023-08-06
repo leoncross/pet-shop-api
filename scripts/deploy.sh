@@ -40,7 +40,7 @@ else
 fi
 
 # Function to update Lambda functions to the latest version
-update_lambda_functions() {
+function update_lambda_functions() {
   latest_version=$1
 
   # Get the .zip filenames in the zipped-lambdas directory
@@ -78,7 +78,7 @@ update_lambda_functions() {
 }
 
 # Function to create and/or update Lambda aliases to the latest version
-update_lambda_aliases() {
+function update_lambda_aliases() {
   # Get the .zip filenames in the zipped-lambdas directory
   endpoints=($(ls "$DIR/zipped-lambdas" | grep '.zip'))
 
@@ -110,13 +110,13 @@ update_lambda_aliases() {
 }
 
 # Function to update the version tracker file
-update_version_tracker() {
+function update_version_tracker() {
   latest_version=$1
   echo "$latest_version" > version_tracker.txt
 }
 
 # Function to get the latest version number from the version tracker file
-get_latest_version_from_version_tracker() {
+function get_latest_version_from_version_tracker() {
   version_tracker_file="version_tracker.txt"
   if [ -f "$version_tracker_file" ]; then
     cat "$version_tracker_file"

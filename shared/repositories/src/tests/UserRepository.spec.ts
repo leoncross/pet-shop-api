@@ -1,8 +1,8 @@
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 
-import { UserRepository } from '@pet-shop-api/repositories'
-import { PartialUser, User } from '../../../types/User'
+import { UserRepository } from '../UserRepository'
+import { PartialUser, User } from '../../../../types/User'
 
 const TABLE_NAME = 'pet-shop-test'
 

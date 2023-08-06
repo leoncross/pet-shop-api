@@ -6,13 +6,13 @@
   "main": "index.js",
   "scripts": {
     "prepare": "husky install",
-    "lint": "prettier --check 'packages/**/*.ts'",
-    "lint:fix": "prettier --write 'packages/**/*.ts'",
-    "test": "npx --workspaces --no-install npm run test",
-    "build": "npx --workspaces --no-install npm run build",
+    "lint": "prettier --check 'packages/**/*.ts' 'shared/**/*.ts'",
+    "lint:fix": "prettier --write 'packages/**/*.ts' 'shared/**/*.ts'",
+    "test": "yarn workspaces run test",
+    "build": "yarn workspaces run build",
     "bundle": "bash ./scripts/bundle-lambdas.sh",
-    "deploy:dev": "npm run build && npm run bundle && bash ./scripts/deploy.sh dev",
-    "deploy:prod": "npm run build && npm run bundle && bash ./scripts/deploy.sh prod"
+    "deploy:dev": "yarn run build && yarn run bundle && bash ./scripts/deploy.sh dev",
+    "deploy:prod": "yarn run build && yarn run bundle && bash ./scripts/deploy.sh prod"
   },
   "author": "leoncross <leon@lscross.co.uk>",
   "license": "ISC",
@@ -33,8 +33,15 @@
     "ts-jest": "^29.1.0",
     "typescript": "^5.1.3"
   },
-  "workspaces": [
-    "packages/*",
-    "shared/*"
-  ]
+  "workspaces": {
+    "packages": [
+      "shared/*",
+      "packages/*"
+    ]
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=18",
+    "npm": "Please use yarn"
+  }
 }

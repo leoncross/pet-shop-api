@@ -1,6 +1,6 @@
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
-import { ProductRepository } from '@pet-shop-api/repositories'
+import { ProductRepository } from '../ProductRepository'
 
 const TABLE_NAME = 'pet-shop-test'
 

@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler, APIGatewayProxyEvent } from 'aws-lambda'
 import * as usecase from './src/use-cases'
-import { UserRepository } from '@pet-shop-api/repositories'
+import { UserRepository } from '@pet-shop-api/repositories/src'
 import { Context } from './types'
 import * as config from './config'
 const successResult = (value: unknown) => ({
