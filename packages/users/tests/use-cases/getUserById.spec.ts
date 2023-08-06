@@ -1,5 +1,6 @@
 import { getUserById, GetUserByIdInput } from '../../src/use-cases/getUserById'
-import { UserRepository } from '../../src/repositories/UserRepository'
+import { UserRepository } from '@pet-shop-api/repositories'
+import * as config from '../../config'
 import { Context } from '../../types'
 
 describe('getUserById', () => {
@@ -7,7 +8,7 @@ describe('getUserById', () => {
   let context: Context
 
   beforeEach(() => {
-    userRepository = new UserRepository()
+    userRepository = new UserRepository(config.get('dbTableName'))
     context = {
       logger: {},
       userRepository,

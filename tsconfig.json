@@ -8,14 +8,16 @@
       "./node_modules/@types",
       "./node_modules/.store@types",
       "./types"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@pet-shop-api/*": ["shared/*"]
+    }
   },
   "references": [
-    {
-      "path": "./packages/users/tsconfig.json"
-    },
-    {
-      "path": "./packages/orders/tsconfig.json"
-    }
+    { "path": "./packages/users" },
+    { "path": "./packages/orders" },
+    { "path": "./packages/products" },
+    { "path": "./shared/repositories" }
   ]
 }

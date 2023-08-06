@@ -1,4 +1,4 @@
-import { UserRepository } from './src/repositories/UserRepository'
+import { UserRepository } from '@pet-shop-api/repositories'
 
 type Context = {
   logger: {}

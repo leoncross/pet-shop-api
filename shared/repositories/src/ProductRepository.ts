@@ -1,15 +1,14 @@
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
-import { DynamodbProduct, Product } from '../../../../types/Product'
-import { get } from '../../config'
+import { DynamodbProduct, Product } from '../../../types/Product'
 
 export class ProductRepository {
   client: DynamoDBDocument
 
   private readonly tableName: string
 
-  constructor() {
-    this.tableName = get('dbTableName')
+  constructor(tableName: string) {
+    this.tableName = tableName
     const dbClient = new DynamoDBClient({})
     this.client = DynamoDBDocument.from(dbClient)
   }

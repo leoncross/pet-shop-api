@@ -1,4 +1,4 @@
-import { ProductRepository } from './src/repositories/ProductRepository'
+import { ProductRepository } from '@pet-shop-api/repositories'
 
 type Context = {
   logger: {}

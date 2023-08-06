@@ -1,10 +1,10 @@
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 
-import { UserRepository } from '../../src/repositories/UserRepository'
-import { PartialUser, User } from '../../../../types/User'
+import { UserRepository } from '@pet-shop-api/repositories'
+import { PartialUser, User } from '../../../types/User'
 
-import * as config from '../../config'
+const TABLE_NAME = 'pet-shop-test'
 
 describe('UserRepository', () => {
   let userRepository: UserRepository
@@ -13,7 +13,7 @@ describe('UserRepository', () => {
   beforeEach(() => {
     const dbClient = new DynamoDBClient({})
     client = DynamoDBDocument.from(dbClient)
-    userRepository = new UserRepository()
+    userRepository = new UserRepository(TABLE_NAME)
     userRepository.client = client
   })
 
@@ -39,7 +39,7 @@ describe('UserRepository', () => {
       const createdUser = await userRepository.create(user)
 
       expect(client.put).toHaveBeenCalledWith({
-        TableName: config.get('dbTableName'),
+        TableName: TABLE_NAME,
         Item: {
           pk: 'USER#123',
           sk: 'USER#123',
@@ -87,7 +87,7 @@ describe('UserRepository', () => {
       const existingUser = await userRepository.get(userId)
 
       expect(client.get).toHaveBeenCalledWith({
-        TableName: config.get('dbTableName'),
+        TableName: TABLE_NAME,
         Key: {
           pk: 'USER#123',
           sk: 'USER#123',
@@ -115,7 +115,7 @@ describe('UserRepository', () => {
       const existingUser = await userRepository.get(userId)
 
       expect(client.get).toHaveBeenCalledWith({
-        TableName: config.get('dbTableName'),
+        TableName: TABLE_NAME,
         Key: {
           pk: 'USER#123',
           sk: 'USER#123',
@@ -161,7 +161,7 @@ describe('UserRepository', () => {
       const result = await userRepository.update(updatedUser)
 
       expect(client.update).toHaveBeenCalledWith({
-        TableName: config.get('dbTableName'),
+        TableName: TABLE_NAME,
         Key: {
           pk: 'USER#123',
           sk: 'USER#123',

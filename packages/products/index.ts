@@ -1,8 +1,8 @@
 import { APIGatewayProxyHandler, APIGatewayProxyEvent } from 'aws-lambda'
 import { Context } from './types'
-import { ProductRepository } from './src/repositories/ProductRepository'
+import { ProductRepository } from '@pet-shop-api/repositories'
 import * as usecase from './src/use-cases'
-
+import * as config from './config'
 const successResult = (value: unknown) => ({
   statusCode: 200,
   body: JSON.stringify(value),
@@ -21,7 +21,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 
     const context: Context = {
       logger: {},
-      productRepository: new ProductRepository(),
+      productRepository: new ProductRepository(config.get('dbTableName')),
     }
 
     if (httpMethod != 'GET') {

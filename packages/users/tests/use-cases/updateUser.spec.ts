@@ -1,5 +1,6 @@
 import { updateUser, UpdateUserInput } from '../../src/use-cases/updateUser'
-import { UserRepository } from '../../src/repositories/UserRepository'
+import { UserRepository } from '@pet-shop-api/repositories'
+import * as config from '../../config'
 import { Context } from '../../types'
 import { User } from '../../../../types/User'
 
@@ -8,7 +9,7 @@ describe('updateUser', () => {
   let context: Context
 
   beforeEach(() => {
-    userRepository = new UserRepository()
+    userRepository = new UserRepository(config.get('dbTableName'))
     context = {
       logger: {},
       userRepository,

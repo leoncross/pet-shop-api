@@ -1,7 +1,8 @@
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
-import { ProductRepository } from '../../src/repositories/ProductRepository'
-import * as config from '../../config'
+import { ProductRepository } from '@pet-shop-api/repositories'
+
+const TABLE_NAME = 'pet-shop-test'
 
 describe('ProductRepository', () => {
   let productRepository: ProductRepository
@@ -10,7 +11,7 @@ describe('ProductRepository', () => {
   beforeEach(() => {
     const dbClient = new DynamoDBClient({})
     client = DynamoDBDocument.from(dbClient)
-    productRepository = new ProductRepository()
+    productRepository = new ProductRepository(TABLE_NAME)
     productRepository.client = client
   })
 
@@ -43,7 +44,7 @@ describe('ProductRepository', () => {
       const product = await productRepository.getById('123')
 
       expect(client.get).toHaveBeenCalledWith({
-        TableName: config.get('dbTableName'),
+        TableName: TABLE_NAME,
         Key: { pk: 'PRODUCT#123' },
       })
 
