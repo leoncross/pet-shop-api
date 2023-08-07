@@ -1,0 +1,16 @@
+{
+  "name": "@pet-shop-api/config",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "scripts": {
+    "test": "jest --runInBand",
+    "build": "tsc --project ./tsconfig.json"
+  },
+  "dependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

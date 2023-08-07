@@ -5,6 +5,7 @@ set -e
 STACK_NAME="PetShopApiStack"
 TEMPLATE_FILE="./infrastructure/template.yaml"
 S3_BUCKET="pet-shop-api-deployment-bucket"
+LAMBDA_OUTPUT_DIR="zipped-lambdas" # Variable: Output directory for zipped files
 ENVIRONMENT=$1  # Set environment from script argument
 DIR="$(pwd)"
 
@@ -112,7 +113,7 @@ function update_lambda_aliases() {
 # Function to update the version tracker file
 function update_version_tracker() {
   latest_version=$1
-  echo "$latest_version" > version_tracker.txt
+  echo "$latest_version" > "$DIR/zipped-lambdas/version_tracker.txt"
 }
 
 # Function to get the latest version number from the version tracker file

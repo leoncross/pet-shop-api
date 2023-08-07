@@ -1,6 +1,6 @@
 import { getUserById, GetUserByIdInput } from '../../src/use-cases/getUserById'
 import { UserRepository } from '@pet-shop-api/repositories'
-import * as config from '../../config'
+import config from '../../src/config'
 import { Context } from '../../types'
 
 describe('getUserById', () => {

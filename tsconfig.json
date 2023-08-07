@@ -18,6 +18,7 @@
     { "path": "./packages/users" },
     { "path": "./packages/orders" },
     { "path": "./packages/products" },
-    { "path": "./shared/repositories" }
+    { "path": "./shared/repositories" },
+    { "path": "./shared/config" }
   ]
 }

@@ -12,6 +12,7 @@
   "dependencies": {
     "@aws-sdk/util-dynamodb": "^3.345.0",
     "@pet-shop-api/repositories": "^1.0.0",
+    "@pet-shop-api/config": "^1.0.0",
     "aws-lambda": "^1.0.7",
     "uuid": "^9.0.0"
   },

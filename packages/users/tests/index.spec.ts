@@ -3,7 +3,7 @@ import * as usecase from '../src/use-cases'
 import { handler } from '../index'
 import { generateUser, generateUserId } from './helpers'
 
-jest.mock('../src/repositories/UserRepository')
+jest.mock('@pet-shop-api/repositories')
 jest.mock('../src/use-cases')
 
 const getUserByIdValidationSpy = jest.spyOn(usecase.validations, 'getUserById')

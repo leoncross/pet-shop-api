@@ -1,6 +1,6 @@
 import { updateUser, UpdateUserInput } from '../../src/use-cases/updateUser'
 import { UserRepository } from '@pet-shop-api/repositories'
-import * as config from '../../config'
+import config from '../../src/config'
 import { Context } from '../../types'
 import { User } from '../../../../types/User'
 

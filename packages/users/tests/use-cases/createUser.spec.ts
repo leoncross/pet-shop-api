@@ -1,6 +1,6 @@
 import { createUser, CreateUserInput } from '../../src/use-cases/createUser'
 import { UserRepository } from '@pet-shop-api/repositories'
-import * as config from '../../config'
+import config from '../../src/config'
 import { Context } from '../../types'
 
 describe('createUser', () => {

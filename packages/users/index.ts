@@ -1,8 +1,8 @@
 import { APIGatewayProxyHandler, APIGatewayProxyEvent } from 'aws-lambda'
 import * as usecase from './src/use-cases'
-import { UserRepository } from '@pet-shop-api/repositories/src'
+import { UserRepository } from '@pet-shop-api/repositories'
 import { Context } from './types'
-import * as config from './config'
+import config from './src/config'
 const successResult = (value: unknown) => ({
   statusCode: 200,
   body: JSON.stringify(value),
