@@ -12,7 +12,9 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.345.0",
     "@aws-sdk/util-dynamodb": "^3.345.0",
-    "aws-lambda": "^1.0.7"
+    "aws-lambda": "^1.0.7",
+    "currency.js": "^2.0.4",
+    "stripe": "^12.17.0"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.116",

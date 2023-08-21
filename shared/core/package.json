@@ -1,0 +1,19 @@
+{
+  "name": "@pet-shop-api/core",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --project ./tsconfig.json"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.345.0",
+    "@aws-sdk/lib-dynamodb": "^3.345.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

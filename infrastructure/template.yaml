@@ -3,19 +3,30 @@ Parameters:
   Environment:
     Type: String
     Default: dev
-    Description: The environment to deploy to (dev or prod)
+    Description: The environment to deploy to (dev, prod, or local)
+
+Conditions:
+  IsLocal: !Equals [ !Ref Environment, "local" ]
 
 Resources:
   PetShopApiStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.amazonaws.com/pet-shop-api-deployment-bucket/api.yaml
+      TemplateURL:
+        !If
+        - IsLocal
+        - http://localhost:4566/pet-shop-api-deployment-bucket/api.yaml
+        - https://s3.amazonaws.com/pet-shop-api-deployment-bucket/api.yaml
       Parameters:
         Environment: !Ref Environment
 
   PetShopDynamoDBStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.amazonaws.com/pet-shop-api-deployment-bucket/dynamodb.yaml
+      TemplateURL:
+        !If
+        - IsLocal
+        - http://localhost:4566/pet-shop-api-deployment-bucket/dynamodb.yaml
+        - https://s3.amazonaws.com/pet-shop-api-deployment-bucket/dynamodb.yaml
       Parameters:
         Environment: !Ref Environment

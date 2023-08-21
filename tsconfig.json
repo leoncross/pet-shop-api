@@ -3,22 +3,23 @@
   "compilerOptions": {
     "declaration": true,
     "sourceMap": true,
-    "target": "ES2021",
+    "target": "ES2022",
+    "outDir": "./dist",
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/.store@types",
       "./types"
     ],
     "baseUrl": ".",
-    "paths": {
-      "@pet-shop-api/*": ["shared/*"]
-    }
+    "paths": { "@pet-shop-api/*": ["shared/*"] }
   },
+  "include": [ "./index.ts", "./packages/**/*", "./shared/**/*" ],
   "references": [
     { "path": "./packages/users" },
     { "path": "./packages/orders" },
     { "path": "./packages/products" },
-    { "path": "./shared/repositories" },
-    { "path": "./shared/config" }
+    { "path": "./shared/config" },
+    { "path": "./shared/core" },
+    { "path": "./shared/common" }
   ]
 }

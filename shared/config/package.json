@@ -8,7 +8,6 @@
     "test": "jest --runInBand",
     "build": "tsc --project ./tsconfig.json"
   },
-  "dependencies": {},
   "keywords": [],
   "author": "",
   "license": "ISC",

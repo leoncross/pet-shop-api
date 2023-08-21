@@ -3,18 +3,37 @@
     "node": true
   },
   "parserOptions": {
-    "project": ["./tsconfig.json"]
+    "project": [
+      "./tsconfig.json"
+    ]
   },
   "rules": {
     "class-methods-use-this": "off",
-    "no-restricted-syntax": ["error", "ForInStatement"],
+    "no-restricted-syntax": [
+      "error",
+      "ForInStatement"
+    ],
     "import/prefer-default-export": "off",
-    "max-len": ["error", { "code": 140 }],
+    "max-len": [
+      "error",
+      {
+        "code": 140
+      }
+    ],
     "@typescript-eslint/no-explicit-any": "error"
   },
-  "ignorePatterns": ["**/*.js", "**/*.json", "**/*.sh", "**/*.yml", "**/*.md"],
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
-  "extends": ["airbnb-typescript/base"]
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "overrides": [
+    {
+      "files": "**/*.ts?(x)"
+    }
+  ]
 }
