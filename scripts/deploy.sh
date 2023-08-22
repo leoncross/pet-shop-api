@@ -85,7 +85,7 @@ esac
 
 echo "Starting deployment for $ENVIRONMENT environment..."
 create_s3_bucket
-#upload_to_s3
+upload_to_s3
 handle_stack "$CAPABILITIES"
 
 for ZIP_FILE in $DIR/$LAMBDA_OUTPUT_DIR/*.zip; do
