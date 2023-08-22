@@ -2,7 +2,7 @@
   "name": "@pet-shop-api/users-handler",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "jest",
     "build": "tsc --project ./tsconfig.json"

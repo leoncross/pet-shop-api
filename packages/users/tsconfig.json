@@ -5,6 +5,7 @@
     "composite": true
   },
   "include": [
+    "./index.ts",
     "./src"
   ],
   "exclude": [

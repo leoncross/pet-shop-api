@@ -1,6 +1,7 @@
 {
   "extends": "@sindresorhus/tsconfig",
   "compilerOptions": {
+    "moduleResolution": "nodenext",
     "declaration": true,
     "sourceMap": true,
     "target": "ES2022",

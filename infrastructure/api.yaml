@@ -49,8 +49,9 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'pet-shop-api-users-${Environment}'  # Dynamic name based on environment
+      Description: "Function for getting users"
       Handler: index.handler
-      Runtime: nodejs14.x
+      Runtime: nodejs18.x
       CodeUri:
         Bucket: pet-shop-api-deployment-bucket
         Key: !Sub 'zipped-lambdas/${Environment}/users.zip'
@@ -61,6 +62,12 @@ Resources:
             Path: /users
             Method: ANY
             RestApiId: !Ref PetShopApi
+  UsersFunctionApiGatewayInvoke:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt UsersFunction.Arn
+      Principal: apigateway.amazonaws.com
   UsersResource:
     Type: "AWS::ApiGateway::Resource"
     Properties:
@@ -91,8 +98,9 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'pet-shop-api-orders-${Environment}'  # Dynamic name based on environment
+      Description: "Function for getting orders"
       Handler: index.handler
-      Runtime: nodejs14.x
+      Runtime: nodejs18.x
       CodeUri:
         Bucket: pet-shop-api-deployment-bucket
         Key: !Sub 'zipped-lambdas/${Environment}/orders.zip'
@@ -103,6 +111,12 @@ Resources:
             Path: /orders
             Method: ANY
             RestApiId: !Ref PetShopApi
+  OrdersFunctionApiGatewayInvoke:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt OrdersFunction.Arn
+      Principal: apigateway.amazonaws.com
   OrdersResource:
     Type: "AWS::ApiGateway::Resource"
     Properties:
@@ -133,8 +147,9 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'pet-shop-api-products-${Environment}'  # Dynamic name based on environment
+      Description: "Function for getting products"
       Handler: index.handler
-      Runtime: nodejs14.x
+      Runtime: nodejs18.x
       CodeUri:
         Bucket: pet-shop-api-deployment-bucket
         Key: !Sub 'zipped-lambdas/${Environment}/products.zip'
@@ -145,6 +160,12 @@ Resources:
             Path: /products
             Method: ANY
             RestApiId: !Ref PetShopApi
+  ProductsFunctionApiGatewayInvoke:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt ProductsFunction.Arn
+      Principal: apigateway.amazonaws.com
   ProductsResource:
     Type: "AWS::ApiGateway::Resource"
     Properties:
