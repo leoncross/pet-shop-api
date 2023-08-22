@@ -27,6 +27,7 @@ function create_s3_bucket() {
         echo "S3 bucket already exists."
     fi
 }
+
 # Upload lambda zip files and infrastructure templates to S3
 function upload_to_s3() {
     echo "Uploading files to S3..."
