@@ -1,6 +1,6 @@
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
-import { Product } from '../../domain/Product'
+import { Product } from '../../domain'
 
 export type DynamodbProduct = Product & {
   pk: string // `PRODUCT#${id}`

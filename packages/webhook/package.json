@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "tsc --project ./tsconfig.json",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "author": "",
   "license": "ISC",

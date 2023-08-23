@@ -5,12 +5,13 @@
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --runInBand",
     "build": "tsc --project ./tsconfig.json"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.345.0",
-    "@aws-sdk/lib-dynamodb": "^3.345.0"
+    "@aws-sdk/lib-dynamodb": "^3.345.0",
+    "uuid": "^9.0.0"
   },
   "keywords": [],
   "author": "",

@@ -1,5 +1,5 @@
-import { Product } from '../../domain/Product'
-import { ProductRepository } from '../../infra/repositories'
+import { Product } from '../../domain'
+import { ProductRepository } from '../../infra'
 
 export type ProductServiceContext = {
   productRepository: ProductRepository
@@ -7,8 +7,6 @@ export type ProductServiceContext = {
 
 export class ProductService {
   private productRepository: ProductRepository
-
-  // @ts-ignore
 
   constructor(context: ProductServiceContext) {
     this.productRepository = context.productRepository

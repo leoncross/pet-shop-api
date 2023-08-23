@@ -1,5 +1,5 @@
 export type Product = {
-  id: string // same as `sk`
+  id: string // uuid`
   category: string // toy
   subcategory: string // rope
   name: string

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --project ./tsconfig.json",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "build": "tsc --project ./tsconfig.json"
   },
   "author": "",
   "license": "ISC",
