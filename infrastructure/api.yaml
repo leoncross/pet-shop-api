@@ -1,6 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
+Conditions:
+  IsDev: !Equals [!Ref Environment, "dev"]
+
 Parameters:
   Environment:
     Type: String
@@ -25,21 +28,8 @@ Resources:
       - OrdersAnyMethod
       - ProductsAnyMethod
     Properties:
+      StageName: !Ref Environment
       RestApiId: !Ref PetShopApi
-
-  DevStage:
-    Type: 'AWS::ApiGateway::Stage'
-    Properties:
-      StageName: dev
-      RestApiId: !Ref PetShopApi
-      DeploymentId: !Ref PetShopApiDeployment
-
-  ProdStage:
-    Type: 'AWS::ApiGateway::Stage'
-    Properties:
-      StageName: prod
-      RestApiId: !Ref PetShopApi
-      DeploymentId: !Ref PetShopApiDeployment
 
 # ------------------------------------
 #           Users Endpoint
@@ -49,7 +39,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'pet-shop-api-users-${Environment}'  # Dynamic name based on environment
-      Description: "Function for getting users"
+      Description: !Sub '[${Environment}] /users'
       Handler: index.handler
       Runtime: nodejs18.x
       CodeUri:
@@ -98,7 +88,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'pet-shop-api-orders-${Environment}'  # Dynamic name based on environment
-      Description: "Function for getting orders"
+      Description: !Sub '[${Environment}] /orders'
       Handler: index.handler
       Runtime: nodejs18.x
       CodeUri:
@@ -147,7 +137,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'pet-shop-api-products-${Environment}'  # Dynamic name based on environment
-      Description: "Function for getting products"
+      Description: !Sub '[${Environment}] /products'
       Handler: index.handler
       Runtime: nodejs18.x
       CodeUri:

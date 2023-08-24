@@ -1,5 +1,7 @@
 #!/bin/bash
 
+trap "echo 'Script interrupted'; exit" INT
+
 ROOT_DIR=$(pwd)
 TEMP_DIR_PREFIX="temp"
 OUTPUT_DIR="zipped-lambdas"

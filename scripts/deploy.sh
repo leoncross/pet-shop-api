@@ -1,19 +1,26 @@
 #!/bin/bash
 
+trap "echo 'Script interrupted'; exit" INT
+
 # Global Variables
 DIR="$(pwd)"
-STACK_NAME="PetShopApiStack"
+ENVIRONMENT=$1
+STACK_NAME="PetShopApiStack-$ENVIRONMENT"
 TEMPLATE_FILE="./infrastructure/template.yaml"
 S3_BUCKET="pet-shop-api-deployment-bucket"
 LAMBDA_OUTPUT_DIR="zipped-lambdas"
-ENVIRONMENT=$1
+
+
+function print_separator() {
+    echo "================== $1 =================="
+}
 
 # Define AWS CLI command
 function aws_cli() {
   if [[ -z "$AWS_ENDPOINT_URL" ]]; then
-    aws "$@" > /dev/null 2>&1
+    aws "$@" > /dev/null
   else
-    aws --endpoint-url "$AWS_ENDPOINT_URL" "$@" > /dev/null 2>&1
+    aws --endpoint-url "$AWS_ENDPOINT_URL" "$@" > /dev/null
   fi
 }
 
@@ -30,7 +37,6 @@ function create_s3_bucket() {
 
 # Upload lambda zip files and infrastructure templates to S3
 function upload_to_s3() {
-    echo "Uploading files to S3..."
     aws_cli s3 cp "$DIR/$LAMBDA_OUTPUT_DIR" "s3://$S3_BUCKET/$LAMBDA_OUTPUT_DIR/$ENVIRONMENT" --recursive --exclude "*" --include "*.zip" || { echo "Failed to upload zipped lambdas."; exit 1; }
     aws_cli s3 cp ./infrastructure/ s3://$S3_BUCKET/ --recursive --exclude "*" --include "*.yaml" || { echo "Failed to upload infrastructure files."; exit 1; }
     echo "Files uploaded to S3 successfully."
@@ -87,11 +93,16 @@ function main() {
             ;;
     esac
 
-    echo "Starting deployment for $ENVIRONMENT environment..."
+    print_separator "Deploying to $ENVIRONMENT environment"
+    print_separator "Checking S3 bucket"
     create_s3_bucket
+    print_separator "Uploading to S3"
     upload_to_s3
+    print_separator "CloudFormation Stack"
     handle_stack "$capabilities"
+    print_separator "Updating Lambdas"
     update_lambda_code_from_s3
+    print_separator "Complete"
     echo "Deployment for $ENVIRONMENT environment is complete."
 }
 
