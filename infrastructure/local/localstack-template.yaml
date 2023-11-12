@@ -1,0 +1,177 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: PetShop API Stack for Local Development
+
+Resources:
+  # API Gateway RestApi Resource
+  PetShopApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: !Sub 'PetShopApi-local'
+      Description: API for Pet Shop in the local environment
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      FailOnWarnings: 'false'
+
+  ApiGatewayStage:
+    Type: AWS::ApiGateway::Stage
+    DependsOn: PetShopApiDeployment
+    Properties:
+      StageName: local
+      Description: Local Stage
+      RestApiId: !Ref PetShopApi
+      DeploymentId: !Ref PetShopApiDeployment
+
+
+  # DynamoDB Table
+  PetShopTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 'pet-shop-local'
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+
+
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'PetShopApi-LambdaExecutionRole-local'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: LambdaExecutionPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - dynamodb:*
+                Resource: '*'
+
+  UsersFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub 'pet-shop-api-users-local'
+      Code:
+        S3Bucket: pet-shop-api-local-bucket
+        S3Key: users.zip
+      Handler: index.handler
+      Runtime: nodejs18.x
+      Role: !GetAtt LambdaExecutionRole.Arn
+
+  UsersResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt 'PetShopApi.RootResourceId'
+      PathPart: 'users'
+      RestApiId: !Ref 'PetShopApi'
+
+  # API Gateway ANY Method for /users
+  UsersAnyMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: ANY
+      ResourceId: !Ref 'UsersResource'
+      RestApiId: !Ref 'PetShopApi'
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${UsersFunction.Arn}/invocations'
+
+  OrdersResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt 'PetShopApi.RootResourceId'
+      PathPart: 'orders'
+      RestApiId: !Ref 'PetShopApi'
+
+  OrdersFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub 'pet-shop-api-orders-local'
+      Code:
+        S3Bucket: pet-shop-api-local-bucket
+        S3Key: orders.zip
+      Handler: index.handler
+      Runtime: nodejs18.x
+      Role: !GetAtt LambdaExecutionRole.Arn
+
+  OrdersAnyMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: ANY
+      ResourceId: !Ref 'OrdersResource'
+      RestApiId: !Ref 'PetShopApi'
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrdersFunction.Arn}/invocations'
+
+  ProductsResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt 'PetShopApi.RootResourceId'
+      PathPart: 'products'
+      RestApiId: !Ref 'PetShopApi'
+
+  ProductsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub 'pet-shop-api-products-local'
+      Code:
+        S3Bucket: pet-shop-api-local-bucket
+        S3Key: products.zip
+      Handler: index.handler
+      Runtime: nodejs18.x
+      Role: !GetAtt LambdaExecutionRole.Arn
+
+  # API Gateway ANY Method for /Products
+  ProductsAnyMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: ANY
+      ResourceId: !Ref 'ProductsResource'
+      RestApiId: !Ref 'PetShopApi'
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProductsFunction.Arn}/invocations'
+
+  # API Gateway Deployment
+  PetShopApiDeployment:
+    Type: 'AWS::ApiGateway::Deployment'
+    DependsOn:
+      - UsersAnyMethod
+      - OrdersAnyMethod
+      - ProductsAnyMethod
+      - OrdersResource
+      - ProductsResource
+    Properties:
+      RestApiId: !Ref PetShopApi
+
+Outputs:
+  RestApiId:
+    Description: The ID of the API Gateway
+    Value: !Ref PetShopApi

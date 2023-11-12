@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  localstack:
+    image: localstack/localstack
+    container_name: localstack
+    ports:
+      - "4566:4566"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      - SERVICES=lambda,dynamodb,s3,iam,apigateway
+
+  script:
+    image: alpine
+    container_name: script
+    depends_on:
+      - localstack
+    volumes:
+      - "./mount_volume:/mount_volume"
+      - "../../scripts/local-deploy.sh:/mount_volume/local-deploy.sh"
+      - "../../zipped-lambdas:/mount_volume/zipped-lambdas"
+      - "./localstack-template.yaml:/mount_volume/localstack-template.yaml"
+    environment:
+      - NODE_ENV="local"
+      - AWS_ACCESS_KEY_ID="test"
+      - AWS_SECRET_ACCESS_KEY="test"
+      - AWS_REGION="us-east-1"
+      - AWS_ENDPOINT="http://localstack:4566"
+    entrypoint: /bin/sh -c
+    command: >
+      "apk --no-cache add curl bash aws-cli &&
+      until curl --silent --output /dev/null --write-out '%{http_code}' http://localstack:4566/_localstack/health | grep '200'; do
+        echo 'Waiting for LocalStack...';
+        sleep 1;
+      done &&
+      /bin/bash /mount_volume/local-deploy.sh &&
+      echo 'Deployment script completed.'"

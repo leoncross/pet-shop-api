@@ -14,23 +14,24 @@ export class ProductRepository {
 
   constructor(tableName: string) {
     this.tableName = tableName
-    const dbClient = new DynamoDBClient({})
+    const dbClient = new DynamoDBClient()
     this.client = DynamoDBDocument.from(dbClient)
   }
 
   async getById(id: string): Promise<Product | null> {
-    const result = await this.client.get({
+    const result = await this.client.query({
       TableName: this.tableName,
-      Key: {
-        pk: `PRODUCT#${id}`,
+      KeyConditionExpression: 'pk = :pkval',
+      ExpressionAttributeValues: {
+        ':pkval': `PRODUCT#${id}`,
       },
     })
 
-    if (!result.Item) {
+    if (!result.Items || result.Items.length === 0) {
       return null
     }
 
-    return this.fromDynamoDBProduct(result.Item as DynamodbProduct)
+    return this.fromDynamoDBProduct(result.Items[0] as DynamodbProduct)
   }
 
   async getByCategory(category: string): Promise<Product[]> {

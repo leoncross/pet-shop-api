@@ -22,11 +22,11 @@ export default class Config<K> {
       throw new Error(`Configuration value not found for key: ${String(key)}`)
     }
 
-    const environmentValue = (value as EnvironmentValues<any>)[
-      environment as keyof EnvironmentValues<any>
+    const environmentValue = (value as EnvironmentValues<unknown>)[
+      environment as keyof EnvironmentValues<unknown>
     ] as K[T] extends EnvironmentValues<infer U> ? U : never
 
-    const defaultValue = (value as EnvironmentValues<any>).default as K[T] extends EnvironmentValues<infer U>
+    const defaultValue = (value as EnvironmentValues<unknown>).default as K[T] extends EnvironmentValues<infer U>
       ? U
       : never
 

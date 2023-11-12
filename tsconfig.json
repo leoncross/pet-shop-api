@@ -12,7 +12,6 @@
       "./types"
     ],
     "baseUrl": ".",
-//    "paths": { "@pet-shop-api/*": ["shared/*"] }
   },
   "include": [ "./index.ts", "./packages/**/*", "./shared/**/*" ],
   "references": [

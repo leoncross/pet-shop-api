@@ -20,12 +20,14 @@ This API is designed to support the front end Pet Shop, and is easily deployable
 - Yarn: Fast, reliable, and secure package management.
 - AWS CLI: Command Line Interface to interact with AWS services.
 - jq: Lightweight and flexible command-line JSON processor. (Used in the bundling script for JSON processing)
-- LocalStack (optional for local AWS testing)
+- LocalStack: (optional for local AWS testing)
+- LocalStack AWS CLI: a thin wrapper around the aws command line interface for use with LocalStack.
 
 **Note**: All requirements can be installed via Homebrew on macOS:
 
 ```bash
 brew install node typescript yarn awscli jq localstack
+pip3 install awscli-local
 ```
 
 ### Setting up
@@ -100,3 +102,12 @@ Our AWS deployments leverage CloudFormation for resource management. Each lambda
     ```bash
     yarn deploy:prod
     ```
+
+
+aws --endpoint-url=http://localhost:4566 s3 mb s3://pet-shop-api-deployment-bucket
+aws --endpoint-url=http://localhost:4566 s3 cp zipped-lambdas/ s3://pet-shop-api-deployment-bucket/zipped-lambdas/local/ --recursive --exclude "*" --include "*.zip"  
+aws --endpoint-url=http://localhost:4566 s3 cp ./infrastructure/ s3://pet-shop-api-deployment-bucket/ --recursive --exclude "*" --include "*.yaml"
+aws --endpoint-url=http://localhost:4566 cloudformation create-stack --stack-name PetShopApiStack-local --template-body file://infrastructure/template.yaml --parameters ParameterKey=Environment,ParameterValue=local --capabilities CAPABILITY_AUTO_EXPAND
+aws --endpoint-url=http://localhost:4566 cloudformation update-stack --stack-name PetShopApiStack-local --template-body file://infrastructure/template.yaml --parameters ParameterKey=Environment,ParameterValue=local --capabilities CAPABILITY_AUTO_EXPAND     
+
+

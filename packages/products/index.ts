@@ -1,18 +1,30 @@
-import { APIGatewayProxyEvent, APIGatewayProxyHandler, Context } from 'aws-lambda'
+import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult, Context } from 'aws-lambda'
 import { ProductRepository, ProductService } from '@pet-shop-api/core'
-import { log, errorHandler, BadRequestError } from '@pet-shop-api/common'
+import { log, errorHandler, NotFoundError, BadRequestError } from '@pet-shop-api/common'
 import config from './src/config'
 
 const productRepository = new ProductRepository(config.get('dbTableName'))
 const productService = new ProductService({ productRepository })
 
+async function getProductById(id: string): Promise<APIGatewayProxyResult> {
+  const product = await productService.getProductById(id)
+  if (!product) {
+    throw new NotFoundError('Product not found')
+  }
+  return { statusCode: 200, body: JSON.stringify(product) }
+}
+
+async function getProductsByCategory(category: string): Promise<APIGatewayProxyResult> {
+  const products = await productService.getProductsByCategory(category)
+  return { statusCode: 200, body: JSON.stringify(products) }
+}
+
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent, context: Context) => {
   log.setContext(context.awsRequestId)
+  const { httpMethod, path, pathParameters, queryStringParameters } = event
 
   try {
-    console.log('basic log - latest version')
-    log.info('logging - latest version')
-    const { httpMethod, path, pathParameters, queryStringParameters } = event
+    log.info('Handling request', { httpMethod, path })
 
     if (path !== '/products' && !path?.startsWith('/products/')) {
       throw new BadRequestError('Unrecognized path')
@@ -23,20 +35,16 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     }
 
     if (pathParameters && pathParameters['id']) {
-      const product = await productService.getProductById(pathParameters['id'])
-      if (!product) {
-        throw new BadRequestError('Product not found')
-      }
-      return { statusCode: 200, body: JSON.stringify(product) }
+      return getProductById(pathParameters['id'])
     }
 
     if (queryStringParameters && queryStringParameters['category']) {
-      const products = await productService.getProductsByCategory(queryStringParameters['category'])
-      return { statusCode: 200, body: JSON.stringify(products) }
+      return getProductsByCategory(queryStringParameters['category'])
     }
 
     throw new BadRequestError('Path or query parameters not recognized')
   } catch (error) {
+    log.error('Error handling request', { error })
     return errorHandler(error)
   }
 }

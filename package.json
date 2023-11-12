@@ -13,7 +13,7 @@
     "bundle": "bash ./scripts/bundle-lambdas.sh",
     "deploy:dev": "yarn run build && yarn run bundle && bash ./scripts/deploy.sh dev",
     "deploy:prod": "yarn run build && yarn run bundle && bash ./scripts/deploy.sh prod",
-    "deploy:local": "",
+    "deploy:local": "yarn run build && yarn run bundle && docker-compose -f ./infrastructure/local/docker-compose.yml up --force-recreate",
     "start:local": "tsc && node dist/index.js"
   },
   "author": "leoncross <leon@lscross.co.uk>",

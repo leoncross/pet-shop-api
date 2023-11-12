@@ -23,6 +23,11 @@ export class BadRequestError extends BaseError {
     return new this(`Bad Request: Missing required field: ${field}`)
   }
 }
+export class NotFoundError extends BaseError {
+  constructor(message = 'Not Found') {
+    super(message, 404)
+  }
+}
 
 export class NotImplemented extends BaseError {
   constructor(message = 'Not Implemented') {
